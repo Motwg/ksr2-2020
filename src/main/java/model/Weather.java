@@ -16,7 +16,7 @@ public class Weather {
     private double pressureAtStationLevel;
     private double pressureAtSeaLevel;
     private double precipitationAfterSixHours;
-    private int heightOfFallenSnow;
+    private double heightOfFallenSnow;
     private Season season;
 
     public Weather(int velocityOfWind, LocalDateTime date, double cloudiness, double temperature,
@@ -107,11 +107,11 @@ public class Weather {
         this.precipitationAfterSixHours = precipitationAfterSixHours;
     }
 
-    public int getHeightOfFallenSnow() {
+    public double getHeightOfFallenSnow() {
         return heightOfFallenSnow;
     }
 
-    public void setHeightOfFallenSnow(int heightOfFallenSnow) {
+    public void setHeightOfFallenSnow(double heightOfFallenSnow) {
         this.heightOfFallenSnow = heightOfFallenSnow;
     }
 
