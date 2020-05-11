@@ -1,6 +1,7 @@
 package model;
 
 import enumerate.Season;
+import net.sourceforge.jFuzzyLogic.FIS;
 
 import java.time.LocalDateTime;
 import java.time.LocalDateTime;
@@ -121,6 +122,12 @@ public class Weather {
 
     public void setSeason(Season season) {
         this.season = season;
+    }
+
+    public void fuzzify(FIS fis) {
+        fis.setVariable("day_time", getDate().getHour());
+        fis.setVariable("cloudiness", getCloudiness());
+        fis.setVariable("dampness", getDampness());
     }
 
     @Override

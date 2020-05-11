@@ -12,16 +12,23 @@ public class App {
     private static final String FIRST_FILENAME = "2016.csv";
     private static final String SECOND_FILENAME = "2017.csv";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         List<Weather> weatherData = DataReader.readWeatherFromCsv(FIRST_FILENAME);
         weatherData.addAll(DataReader.readWeatherFromCsv(SECOND_FILENAME));
-        load("weather.fcl");
+        FIS fis = load("weather.fcl");
+        weatherData.get(0).fuzzify(fis);
+        fis.evaluate();
+        Variable dampness = fis.getVariable("dampness");
+        System.out.println(weatherData.get(0));
+        System.out.println(dampness);
+        //JFuzzyChart.get().chart(dampness, dampness.getDefuzzifier(), true);
+
         //Only to demonstrate:
         //weatherData.forEach(w -> System.out.println(w.toString()));
 
     }
 
-    public static void load(String filename) {
+    public static FIS load(String filename) throws Exception {
         // Load from 'FCL' file
         String fileName = "data" + File.separator + filename;
         FIS fis = FIS.load(fileName,true);
@@ -29,11 +36,15 @@ public class App {
         if( fis == null ) {
             System.err.println("Can't load file: '"
                     + fileName + "'");
-            return;
+            throw new Exception();
         }
+        JFuzzyChart.get().chart(fis);
+        return fis;
+
 
         // Show
-        JFuzzyChart.get().chart(fis);
+
+
         //fis.chart();
 
         /*
