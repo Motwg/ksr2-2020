@@ -16,7 +16,8 @@ public class ReportGenerator {
 
     private Map<String, Map<String, Double>> getTerms() {
         List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
-                "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather");
+                "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
+                "temperature", "temperature_wet");
 
         Map<String, Map<String, Double>> fields = new HashMap<>();
         for (String var : variables) {

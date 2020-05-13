@@ -32,8 +32,8 @@ public class FuzzifyWeather {
             case "pressure_sea": setPressureAtSeaLevel(fieldValue); break;
             case "precipitation_six": setPrecipitationAfterSixHours(fieldValue); break;
             case "snow": setHeightOfFallenSnow(fieldValue); break;
-            //case "temperature": (fieldValue);
-            //case "temperature2": (fieldValue);
+            case "temperature": setTemperature(fieldValue); break;
+            case "temperature_wet": setTemperatureOfWetThermometer(fieldValue); break;
             case "weather": setWeather(fieldValue); break;
         }
     }
@@ -48,8 +48,8 @@ public class FuzzifyWeather {
             case "pressure_sea": return getPressureAtSeaLevel();
             case "precipitation_six": return getPrecipitationAfterSixHours();
             case "snow": return getHeightOfFallenSnow();
-            //case "temperature": (;
-            //case "temperature2": ();
+            case "temperature": return getTemperature();
+            case "temperature_wet": return  getTemperatureOfWetThermometer();
             case "weather": return getWeather();
             default: return "";
         }

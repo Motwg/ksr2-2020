@@ -56,7 +56,6 @@ public class Weather {
         fis.getVariable("dampness").setUniverseMax(100);
         fis.getVariable("dampness").setUniverseMin(0);
         fis.getVariable("day_time").setUniverseMax(24);
-        fis.getVariable("temperature_wet_summer").setUniverseMin(0);
 
         fis.setVariable("day_time", getDate().getHour());
         fis.setVariable("cloudiness", getCloudiness());
@@ -72,12 +71,16 @@ public class Weather {
 
         List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
                 "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
-                "temperature_" + getSeason().name().toLowerCase(),
-                "temperature_wet_" + getSeason().name().toLowerCase());
+                "temperature", "temperature_wet");
 
         FuzzifyWeather fWeather = new FuzzifyWeather();
         for (String varName : variables) {
-            Variable var = fis.getVariable(varName);
+            Variable var;
+            if (varName.contains("temperature")) {
+                var = fis.getVariable(varName + '_' + getSeason().name().toLowerCase());
+            }else {
+                var = fis.getVariable(varName);
+            }
             String value = var.getLinguisticTerms().keySet().stream()
                     .map(str -> new Pair<>(str, var.getMembership(str)))
                     .filter(pair -> pair.getValue() > activation)
@@ -87,10 +90,10 @@ public class Weather {
             fWeather.setField(varName, value);
         }
         fWeather.setSeason(getSeason());
-        JFuzzyChart.get().chart(fis.getVariable("temperature_" + getSeason().name().toLowerCase()),true);
-        JFuzzyChart.get().chart(fis.getVariable("temperature_wet_" + getSeason().name().toLowerCase()),true);
-        JFuzzyChart.get().chart(fis.getVariable("snow"), true);
-        JFuzzyChart.get().chart(fis.getVariable("cloudiness"), true);
+        //JFuzzyChart.get().chart(fis.getVariable("temperature_" + getSeason().name().toLowerCase()),true);
+        //JFuzzyChart.get().chart(fis.getVariable("temperature_wet_" + getSeason().name().toLowerCase()),true);
+        //JFuzzyChart.get().chart(fis.getVariable("snow"), true);
+        //JFuzzyChart.get().chart(fis.getVariable("cloudiness"), true);
         return fWeather;
     }
 
