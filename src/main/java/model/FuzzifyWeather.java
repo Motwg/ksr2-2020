@@ -1,13 +1,12 @@
 package model;
 
 import enumerate.Season;
-import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Setter
+@Getter
 @ToString
 public class FuzzifyWeather {
     private String velocityOfWind;
@@ -36,6 +35,23 @@ public class FuzzifyWeather {
             //case "temperature": (fieldValue);
             //case "temperature2": (fieldValue);
             case "weather": setWeather(fieldValue); break;
+        }
+    }
+
+    public String getField(String fieldName) {
+        switch (fieldName) {
+            case "wind_velocity": return getVelocityOfWind();
+            case "day_time": return getDayTime();
+            case "cloudiness": return getCloudiness();
+            case "dampness": return getDampness();
+            case "pressure_station": return getPressureAtStationLevel();
+            case "pressure_sea": return getPressureAtSeaLevel();
+            case "precipitation_six": return getPrecipitationAfterSixHours();
+            case "snow": return getHeightOfFallenSnow();
+            //case "temperature": (;
+            //case "temperature2": ();
+            case "weather": return getWeather();
+            default: return "";
         }
     }
 

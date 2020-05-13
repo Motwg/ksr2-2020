@@ -51,6 +51,6 @@ public class DataReader {
                 Double.parseDouble(columns[41]),
                 Double.parseDouble(columns[43]),
                 Double.parseDouble(columns[48]),
-                Integer.parseInt(columns[97]));
+                Double.parseDouble(columns[97]));
     }
 }

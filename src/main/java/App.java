@@ -1,34 +1,31 @@
 import model.FuzzifyWeather;
 import model.Weather;
 import net.sourceforge.jFuzzyLogic.FIS;
-import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
-import net.sourceforge.jFuzzyLogic.rule.Variable;
 import utils.DataReader;
+import utils.ReportGenerator;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class App {
 
     private static final String FIRST_FILENAME = "2016.csv";
     private static final String SECOND_FILENAME = "2017.csv";
+    private static final double activation = .3;
 
     public static void main(String[] args) throws Exception {
         List<Weather> weatherData = DataReader.readWeatherFromCsv(FIRST_FILENAME);
         weatherData.addAll(DataReader.readWeatherFromCsv(SECOND_FILENAME));
         FIS fis = load("weather.fcl");
-        System.out.println(weatherData.get(8));
-        FuzzifyWeather fWeather = weatherData.get(8).fuzzify(fis, 0.5);
-        System.out.println(fWeather);
-        //fis.evaluate();
-        //Variable dampness = fis.getVariable("dampness");
 
-        //System.out.println(dampness);
-        //JFuzzyChart.get().chart(dampness, dampness.getDefuzzifier(), true);
+        List<FuzzifyWeather> fWeaterData = weatherData.stream()
+                //.limit(15)
+                .map(weather -> weather.fuzzify(fis, activation))
+                .collect(Collectors.toList());
 
-        //Only to demonstrate:
-        //weatherData.forEach(w -> System.out.println(w.toString()));
-
+        ReportGenerator generator = new ReportGenerator(fWeaterData);
+        generator.generateReport();
     }
 
     public static FIS load(String filename) throws Exception {

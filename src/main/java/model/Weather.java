@@ -2,22 +2,15 @@ package model;
 
 import enumerate.Season;
 import javafx.util.Pair;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.sourceforge.jFuzzyLogic.FIS;
-import net.sourceforge.jFuzzyLogic.JFuzzyLogic;
-import net.sourceforge.jFuzzyLogic.defuzzifier.Defuzzifier;
-import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
-import net.sourceforge.jFuzzyLogic.rule.LinguisticTerm;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
 
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -37,7 +30,7 @@ public class Weather {
 
     public Weather(int velocityOfWind, LocalDateTime date, double cloudiness, double temperature,
                    double temperatureOfWetThermometer, int dampness, double pressureAtStationLevel,
-                   double pressureAtSeaLevel, double precipitationAfterSixHours, int heightOfFallenSnow) {
+                   double pressureAtSeaLevel, double precipitationAfterSixHours, double heightOfFallenSnow) {
         this.velocityOfWind = velocityOfWind;
         this.date = date;
         this.cloudiness = cloudiness;
@@ -52,6 +45,11 @@ public class Weather {
     }
 
     public FuzzifyWeather fuzzify(FIS fis, double activation) {
+        fis.getVariable("dampness").setUniverseMax(100);
+        fis.getVariable("dampness").setUniverseMin(0);
+        fis.getVariable("day_time").setUniverseMax(24);
+        fis.getVariable("temperature_wet_summer").setUniverseMin(0);
+
         fis.setVariable("day_time", getDate().getHour());
         fis.setVariable("cloudiness", getCloudiness());
         fis.setVariable("dampness", getDampness());
@@ -66,18 +64,22 @@ public class Weather {
                 "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather");
 
         FuzzifyWeather fWeather = new FuzzifyWeather();
+
         for (String varName : variables) {
             Variable var = fis.getVariable(varName);
             String value = var.getLinguisticTerms().keySet().stream()
                     .map(str -> new Pair<>(str, var.getMembership(str)))
                     .filter(pair -> pair.getValue() > activation)
-                    .max((pair1, pair2) -> pair1.getValue().compareTo(pair2.getValue()))
-                    .map(pair -> pair.getKey())
+                    .max(Comparator.comparing(Pair::getValue))
+                    .map(Pair::getKey)
                     .orElse("");
             fWeather.setField(varName, value);
         }
         fWeather.setSeason(getSeason());
-        JFuzzyChart.get().chart(fis.getVariable("dampness"), true);
+        /*System.out.println("==================");
+        System.out.println(toString());
+        for( Rule r : fis.getFunctionBlock("weather").getFuzzyRuleBlock("weather_rules").getRules() )
+            System.out.println(r);*/
         return fWeather;
     }
 
