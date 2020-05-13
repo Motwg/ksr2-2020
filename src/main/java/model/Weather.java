@@ -2,23 +2,15 @@ package model;
 
 import enumerate.Season;
 import javafx.util.Pair;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.sourceforge.jFuzzyLogic.FIS;
-import net.sourceforge.jFuzzyLogic.JFuzzyLogic;
-import net.sourceforge.jFuzzyLogic.defuzzifier.Defuzzifier;
-import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
-import net.sourceforge.jFuzzyLogic.rule.LinguisticTerm;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
 
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -83,7 +75,7 @@ public class Weather {
             }
             String value = var.getLinguisticTerms().keySet().stream()
                     .map(str -> new Pair<>(str, var.getMembership(str)))
-                    .filter(pair -> pair.getValue() > activation)
+                    .filter(pair -> pair.getValue() >= activation)
                     .max(Comparator.comparing(Pair::getValue))
                     .map(Pair::getKey)
                     .orElse("");
