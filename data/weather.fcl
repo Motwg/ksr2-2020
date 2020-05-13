@@ -9,7 +9,14 @@ VAR_INPUT				// Define input variables
 	snow : REAL;
 	pressure_station : REAL;
     pressure_sea : REAL;
-
+    temperature_winter: REAL;
+    temperature_spring: REAL;
+    temperature_summer: REAL;
+    temperature_autumn: REAL;
+    temperature_wet_winter: REAL;
+    temperature_wet_spring: REAL;
+    temperature_wet_summer: REAL;
+    temperature_wet_autumn: REAL;
     weather : REAL;
 END_VAR
 /*
@@ -33,7 +40,7 @@ END_FUZZIFY
 
 FUZZIFY cloudiness // in octants
 	TERM sunny := (0, 1) (1, 1) (3, 0);
-	TERM cloudy := (4, 0) (6, 1) (8, 1);
+	TERM cloudy := (4, 0) (6, 1) (8, 1) (10, 1);
 END_FUZZIFY
 
 FUZZIFY dampness
@@ -67,6 +74,70 @@ FUZZIFY pressure_sea
     TERM low := sigm -0.1 1030;
 	TERM optimal := gauss 1045 10;
 	TERM high := sigm 0.1 1060;
+END_FUZZIFY
+
+FUZZIFY temperature_winter
+    TERM freezing := (-15, 1) (-12, 1) (-7, 0);
+    TERM cool := (-8, 0) (-5, 1) (-2, 0);
+    TERM moderate := (-3, 0) (0, 1) (3, 0);
+    TERM warm := (2, 0) (6, 1) (9, 0);
+    TERM hot := (8, 0) (10, 1) (15, 1) (35, 1);
+END_FUZZIFY
+
+FUZZIFY temperature_spring
+    TERM freezing := (-15, 1)  (0, 1) (5, 0);
+    TERM cool := (4, 0) (7, 1) (10, 0);
+    TERM moderate := (9, 0) (12, 1) (15, 0);  // + 12
+    TERM warm := (14, 0) (18, 1) (21, 0);
+    TERM hot := (20, 0) (22, 1) (27, 1) (35, 1);
+END_FUZZIFY
+
+FUZZIFY temperature_summer
+    TERM freezing := (-15, 1) (6, 1) (11, 0);
+    TERM cool := (10, 0) (13, 1) (16, 0);
+    TERM moderate := (15, 0) (18, 1) (21, 0); // + 18
+    TERM warm := (20, 0) (24, 1) (27, 0);
+    TERM hot := (26, 0) (28, 1) (32, 1) (35, 1);
+END_FUZZIFY
+
+FUZZIFY temperature_autumn
+    TERM freezing := (-15, 1) (-4, 1) (1, 0);
+    TERM cool := (0, 0) (3, 1) (6, 0);
+    TERM moderate := (5, 0) (8, 1) (11, 0); // + 8
+    TERM warm := (10, 0) (14, 1) (17, 0);
+    TERM hot := (16, 0) (18, 1) (23, 1) (35, 1);
+END_FUZZIFY
+
+FUZZIFY temperature_wet_winter
+    TERM freezing := (-15, 1) (-12, 1) (-7, 0);
+    TERM cool := (-8, 0) (-5, 1) (-2, 0);
+    TERM moderate := (-3, 0) (0, 1) (3, 0);
+    TERM warm := (2, 0) (6, 1) (9, 0);
+    TERM hot := (8, 0) (10, 1) (15, 1) (35, 1);
+END_FUZZIFY
+
+FUZZIFY temperature_wet_spring
+    TERM freezing := (-15, 1) (0, 1) (5, 0);
+    TERM cool := (4, 0) (7, 1) (10, 0);
+    TERM moderate := (9, 0) (12, 1) (15, 0);  // + 12
+    TERM warm := (14, 0) (18, 1) (21, 0);
+    TERM hot := (20, 0) (22, 1) (27, 1) (35, 1);
+END_FUZZIFY
+
+FUZZIFY temperature_wet_summer
+    TERM freezing := (-15, 1) (6, 1) (11, 0);
+    TERM cool := (10, 0) (13, 1) (16, 0);
+    TERM moderate := (15, 0) (18, 1) (21, 0); // + 18
+    TERM warm := (20, 0) (24, 1) (27, 0);
+    TERM hot := (26, 0) (28, 1) (32, 1) (35, 1);
+END_FUZZIFY
+
+FUZZIFY temperature_wet_autumn
+    TERM freezing := (-15, 1) (-4, 1) (1, 0);
+    TERM cool := (0, 0) (3, 1) (6, 0);
+    TERM moderate := (5, 0) (8, 1) (11, 0); // + 8
+    TERM warm := (10, 0) (14, 1) (17, 0);
+    TERM hot := (16, 0) (18, 1) (23, 1) (35, 1);
 END_FUZZIFY
 
 DEFUZZIFY weather

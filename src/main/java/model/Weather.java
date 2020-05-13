@@ -60,10 +60,14 @@ public class Weather {
         fis.setVariable("snow", getHeightOfFallenSnow());
         fis.setVariable("pressure_station", getPressureAtStationLevel());
         fis.setVariable("pressure_sea", getPressureAtSeaLevel());
+        fis.setVariable("temperature_" + getSeason().name().toLowerCase(), getTemperature());
+        fis.setVariable("temperature_wet_" + getSeason().name().toLowerCase(), getTemperatureOfWetThermometer());
         fis.evaluate();
 
         List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
-                "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather");
+                "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
+                "temperature_" + getSeason().name().toLowerCase(),
+                "temperature_wet_" + getSeason().name().toLowerCase());
 
         FuzzifyWeather fWeather = new FuzzifyWeather();
         for (String varName : variables) {
@@ -77,7 +81,10 @@ public class Weather {
             fWeather.setField(varName, value);
         }
         fWeather.setSeason(getSeason());
-        JFuzzyChart.get().chart(fis.getVariable("dampness"), true);
+        JFuzzyChart.get().chart(fis.getVariable("temperature_" + getSeason().name().toLowerCase()),true);
+        JFuzzyChart.get().chart(fis.getVariable("temperature_wet_" + getSeason().name().toLowerCase()),true);
+        JFuzzyChart.get().chart(fis.getVariable("snow"), true);
+        JFuzzyChart.get().chart(fis.getVariable("cloudiness"), true);
         return fWeather;
     }
 

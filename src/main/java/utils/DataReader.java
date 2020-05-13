@@ -46,11 +46,11 @@ public class DataReader {
                 date,
                 Double.parseDouble(columns[21]),
                 Double.parseDouble(columns[29]),
-                Double.parseDouble(columns[31]),
+                Double.parseDouble((columns[31].contains("/") || columns[31].isEmpty()) ? "0.0" : columns[31]),
                 Integer.parseInt(columns[37]),
                 Double.parseDouble(columns[41]),
                 Double.parseDouble(columns[43]),
                 Double.parseDouble(columns[48]),
-                Integer.parseInt(columns[97]));
+                Integer.parseInt((columns[97].contains("/") || columns[97].isEmpty()) ? "0" : columns[97]));
     }
 }

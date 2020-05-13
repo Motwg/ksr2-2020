@@ -20,6 +20,19 @@ public class App {
         System.out.println(weatherData.get(8));
         FuzzifyWeather fWeather = weatherData.get(8).fuzzify(fis, 0.5);
         System.out.println(fWeather);
+
+        System.out.println(weatherData.get(2500));
+        FuzzifyWeather fWeather2 = weatherData.get(2500).fuzzify(fis, 0.5);
+        System.out.println(fWeather2);
+
+        System.out.println(weatherData.get(5100));
+        FuzzifyWeather fWeather3 = weatherData.get(5100).fuzzify(fis, 0.5);
+        System.out.println(fWeather3);
+
+        System.out.println(weatherData.get(7500));
+        FuzzifyWeather fWeather4 = weatherData.get(7500).fuzzify(fis, 0.5);
+        System.out.println(fWeather4);
+
         //fis.evaluate();
         //Variable dampness = fis.getVariable("dampness");
 
