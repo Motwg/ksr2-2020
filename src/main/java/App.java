@@ -1,3 +1,4 @@
+import model.FuzzifyWeather;
 import model.Weather;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
@@ -16,11 +17,13 @@ public class App {
         List<Weather> weatherData = DataReader.readWeatherFromCsv(FIRST_FILENAME);
         weatherData.addAll(DataReader.readWeatherFromCsv(SECOND_FILENAME));
         FIS fis = load("weather.fcl");
-        weatherData.get(0).fuzzify(fis);
-        fis.evaluate();
-        Variable dampness = fis.getVariable("dampness");
-        System.out.println(weatherData.get(0));
-        System.out.println(dampness);
+        System.out.println(weatherData.get(8));
+        FuzzifyWeather fWeather = weatherData.get(8).fuzzify(fis, 0.5);
+        System.out.println(fWeather);
+        //fis.evaluate();
+        //Variable dampness = fis.getVariable("dampness");
+
+        //System.out.println(dampness);
         //JFuzzyChart.get().chart(dampness, dampness.getDefuzzifier(), true);
 
         //Only to demonstrate:
@@ -38,7 +41,7 @@ public class App {
                     + fileName + "'");
             throw new Exception();
         }
-        JFuzzyChart.get().chart(fis);
+        //JFuzzyChart.get().chart(fis);
         return fis;
 
 

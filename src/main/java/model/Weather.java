@@ -1,11 +1,26 @@
 package model;
 
 import enumerate.Season;
+import javafx.util.Pair;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import net.sourceforge.jFuzzyLogic.FIS;
+import net.sourceforge.jFuzzyLogic.JFuzzyLogic;
+import net.sourceforge.jFuzzyLogic.defuzzifier.Defuzzifier;
+import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
+import net.sourceforge.jFuzzyLogic.rule.LinguisticTerm;
+import net.sourceforge.jFuzzyLogic.rule.Variable;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
+@Setter
+@Getter
 public class Weather {
 
     private int velocityOfWind;
@@ -36,98 +51,34 @@ public class Weather {
         this.season = SeasonFactory.getSeason(date);
     }
 
-    public int getVelocityOfWind() {
-        return velocityOfWind;
-    }
-
-    public void setVelocityOfWind(int velocityOfWind) {
-        this.velocityOfWind = velocityOfWind;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public double getCloudiness() {
-        return cloudiness;
-    }
-
-    public void setCloudiness(double cloudiness) {
-        this.cloudiness = cloudiness;
-    }
-
-    public double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public double getTemperatureOfWetThermometer() {
-        return temperatureOfWetThermometer;
-    }
-
-    public void setTemperatureOfWetThermometer(double temperatureOfWetThermometer) {
-        this.temperatureOfWetThermometer = temperatureOfWetThermometer;
-    }
-
-    public int getDampness() {
-        return dampness;
-    }
-
-    public void setDampness(int dampness) {
-        this.dampness = dampness;
-    }
-
-    public double getPressureAtStationLevel() {
-        return pressureAtStationLevel;
-    }
-
-    public void setPressureAtStationLevel(double pressureAtStationLevel) {
-        this.pressureAtStationLevel = pressureAtStationLevel;
-    }
-
-    public double getPressureAtSeaLevel() {
-        return pressureAtSeaLevel;
-    }
-
-    public void setPressureAtSeaLevel(double pressureAtSeaLevel) {
-        this.pressureAtSeaLevel = pressureAtSeaLevel;
-    }
-
-    public double getPrecipitationAfterSixHours() {
-        return precipitationAfterSixHours;
-    }
-
-    public void setPrecipitationAfterSixHours(double precipitationAfterSixHours) {
-        this.precipitationAfterSixHours = precipitationAfterSixHours;
-    }
-
-    public double getHeightOfFallenSnow() {
-        return heightOfFallenSnow;
-    }
-
-    public void setHeightOfFallenSnow(double heightOfFallenSnow) {
-        this.heightOfFallenSnow = heightOfFallenSnow;
-    }
-
-    public Season getSeason() {
-        return season;
-    }
-
-    public void setSeason(Season season) {
-        this.season = season;
-    }
-
-    public void fuzzify(FIS fis) {
+    public FuzzifyWeather fuzzify(FIS fis, double activation) {
         fis.setVariable("day_time", getDate().getHour());
         fis.setVariable("cloudiness", getCloudiness());
         fis.setVariable("dampness", getDampness());
+        fis.setVariable("wind_velocity", getVelocityOfWind());
+        fis.setVariable("precipitation_six", getPrecipitationAfterSixHours());
+        fis.setVariable("snow", getHeightOfFallenSnow());
+        fis.setVariable("pressure_station", getPressureAtStationLevel());
+        fis.setVariable("pressure_sea", getPressureAtSeaLevel());
+        fis.evaluate();
+
+        List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
+                "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather");
+
+        FuzzifyWeather fWeather = new FuzzifyWeather();
+        for (String varName : variables) {
+            Variable var = fis.getVariable(varName);
+            String value = var.getLinguisticTerms().keySet().stream()
+                    .map(str -> new Pair<>(str, var.getMembership(str)))
+                    .filter(pair -> pair.getValue() > activation)
+                    .max((pair1, pair2) -> pair1.getValue().compareTo(pair2.getValue()))
+                    .map(pair -> pair.getKey())
+                    .orElse("");
+            fWeather.setField(varName, value);
+        }
+        fWeather.setSeason(getSeason());
+        JFuzzyChart.get().chart(fis.getVariable("dampness"), true);
+        return fWeather;
     }
 
     @Override
