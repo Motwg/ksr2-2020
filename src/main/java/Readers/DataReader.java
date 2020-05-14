@@ -1,4 +1,4 @@
-package utils;
+package Readers;
 
 import model.Weather;
 

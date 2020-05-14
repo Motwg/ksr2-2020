@@ -1,17 +1,17 @@
-package utils;
-
+package depr;
+/*
 import javafx.util.Pair;
-import model.FuzzifyWeather;
+import depr.DeprFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
 
 import java.util.*;
 
 public class ReportGenerator {
-    private List<FuzzifyWeather> weatherList;
+    private List<DeprFuzzifyWeather> weatherList;
     private final String inputFileName = "occ.fcl";
 
-    public ReportGenerator(List<FuzzifyWeather> weatherList) {
+    public ReportGenerator(List<DeprFuzzifyWeather> weatherList) {
         this.weatherList = weatherList;
     }
 
@@ -24,7 +24,7 @@ public class ReportGenerator {
         //for (String var : variables) {
             // occurrences
             Map<String, Integer> terms = new HashMap<>();
-            for (FuzzifyWeather weather : weatherList)
+            for (DeprFuzzifyWeather weather : weatherList)
                 terms.put(weather.getField(var), terms.getOrDefault(weather.getField(var), 0) + 1);
 
             // change to percentage
@@ -54,7 +54,7 @@ public class ReportGenerator {
                 .map(Pair::getKey)
                 .orElse("");
     }
-/*
+*//*
     public void generateReport() {
         List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
                 "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
@@ -80,7 +80,7 @@ public class ReportGenerator {
         System.out.println(freq);
         System.out.println(builder.toString());
     }
-*/
+*//*
     public void generateReport() {
         List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
                 "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
@@ -122,3 +122,4 @@ public class ReportGenerator {
         System.out.println(builder.toString());
     }
 }
+*/

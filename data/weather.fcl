@@ -40,7 +40,7 @@ FUZZIFY cloudiness // in octants
 END_FUZZIFY
 
 FUZZIFY dampness
-	TERM optimal := gauss 60 5;
+	TERM optimal_dampness := gauss 60 5;
 END_FUZZIFY
 
 FUZZIFY wind_velocity
@@ -49,84 +49,84 @@ FUZZIFY wind_velocity
 END_FUZZIFY
 
 FUZZIFY precipitation_six
-    TERM almost_none := (0, 1) (0.4, 0);
-	TERM light := (0.4, 0) (0.5, 1) (0.8, 1) (1, 0);
-	TERM moderate := (1, 0) (1.2, 1) (1.4, 1) (1.5, 0);
-	TERM heavy := (1.3, 0) (1.5, 1) (3, 1);
+    TERM almost_none_precipitation := (0, 1) (0.4, 0);
+	TERM light_precipitation := (0.4, 0) (0.5, 1) (0.8, 1) (1, 0);
+	TERM moderate_precipitation := (1, 0) (1.2, 1) (1.4, 1) (1.5, 0);
+	TERM heavy_precipitation := (1.3, 0) (1.5, 1) (3, 1);
 END_FUZZIFY
 
 FUZZIFY snow
-    TERM almost_none := (0, 1) (0.4, 0);
-	TERM some := (0.2, 0) (0.5, 1) (2.5, 1);
-	TERM much := (2, 0) (3, 1) (4, 1);
+    TERM almost_none_snow := (0, 1) (0.4, 0);
+	TERM some_snow := (0.2, 0) (0.5, 1) (2.5, 1);
+	TERM much_snow := (2, 0) (3, 1) (4, 1);
 END_FUZZIFY
 
 FUZZIFY pressure_station
-    TERM low := sigm -0.1 1000;
-	TERM optimal := gauss 1013.25 15;
-	TERM high := sigm 0.1 1030;
+    TERM low_pressure := sigm -0.1 1000;
+	TERM optimal_pressure := gauss 1013.25 15;
+	TERM high_pressure := sigm 0.1 1030;
 END_FUZZIFY
 
 FUZZIFY pressure_sea
-    TERM low := sigm -0.1 1030;
-	TERM optimal := gauss 1045 10;
-	TERM high := sigm 0.1 1060;
+    TERM low_pressure_at_sea_level := sigm -0.1 1030;
+	TERM optimal_pressure_at_sea_level := gauss 1045 10;
+	TERM high_pressure_at_sea_level := sigm 0.1 1060;
 END_FUZZIFY
 
 FUZZIFY temperature_winter
-    TERM freezing := (-15, 1) (-12, 1) (-7, 0);
-    TERM cool := (-8, 0) (-5, 1) (-2, 0);
-    TERM moderate := (-3, 0) (0, 1) (3, 0);
-    TERM warm := (2, 0) (6, 1) (9, 0);
-    TERM hot := (8, 0) (10, 1) (15, 1) (35, 1);
+    TERM freezing_temperature := (-15, 1) (-12, 1) (-7, 0);
+    TERM cool_temperature := (-8, 0) (-5, 1) (-2, 0);
+    TERM moderate_temperature := (-3, 0) (0, 1) (3, 0);
+    TERM warm_temperature := (2, 0) (6, 1) (9, 0);
+    TERM hot_temperature := (8, 0) (10, 1) (15, 1) (35, 1);
 END_FUZZIFY
 
 FUZZIFY temperature_spring
-    TERM freezing := (-15, 1)  (0, 1) (5, 0);
-    TERM cool := (4, 0) (7, 1) (10, 0);
-    TERM moderate := (9, 0) (12, 1) (15, 0);  // + 12
-    TERM warm := (14, 0) (18, 1) (21, 0);
-    TERM hot := (20, 0) (22, 1) (27, 1) (35, 1);
+    TERM freezing_temperature := (-15, 1)  (0, 1) (5, 0);
+    TERM cool_temperature := (4, 0) (7, 1) (10, 0);
+    TERM moderate_temperature := (9, 0) (12, 1) (15, 0);  // + 12
+    TERM warm_temperature := (14, 0) (18, 1) (21, 0);
+    TERM hot_temperature := (20, 0) (22, 1) (27, 1) (35, 1);
 END_FUZZIFY
 
 FUZZIFY temperature_summer
-    TERM freezing := (-15, 1) (6, 1) (11, 0);
-    TERM cool := (10, 0) (13, 1) (16, 0);
-    TERM moderate := (15, 0) (18, 1) (21, 0); // + 18
-    TERM warm := (20, 0) (24, 1) (27, 0);
-    TERM hot := (26, 0) (28, 1) (32, 1) (35, 1);
+    TERM freezing_temperature := (-15, 1) (6, 1) (11, 0);
+    TERM cool_temperature := (10, 0) (13, 1) (16, 0);
+    TERM moderate_temperature := (15, 0) (18, 1) (21, 0); // + 18
+    TERM warm_temperature := (20, 0) (24, 1) (27, 0);
+    TERM hot_temperature := (26, 0) (28, 1) (32, 1) (35, 1);
 END_FUZZIFY
 
 FUZZIFY temperature_autumn
-    TERM freezing := (-15, 1) (-4, 1) (1, 0);
-    TERM cool := (0, 0) (3, 1) (6, 0);
-    TERM moderate := (5, 0) (8, 1) (11, 0); // + 8
-    TERM warm := (10, 0) (14, 1) (17, 0);
-    TERM hot := (16, 0) (18, 1) (23, 1) (35, 1);
+    TERM freezing_temperature := (-15, 1) (-4, 1) (1, 0);
+    TERM cool_temperature := (0, 0) (3, 1) (6, 0);
+    TERM moderate_temperature := (5, 0) (8, 1) (11, 0); // + 8
+    TERM warm_temperature := (10, 0) (14, 1) (17, 0);
+    TERM hot_temperature := (16, 0) (18, 1) (23, 1) (35, 1);
 END_FUZZIFY
 
 FUZZIFY temperature_wet_winter
-    TERM freezing := (-15, 1) (-12, 1) (-7, 0);
-    TERM cool := (-8, 0) (-5, 1) (-2, 0);
-    TERM moderate := (-3, 0) (0, 1) (3, 0);
-    TERM warm := (2, 0) (6, 1) (9, 0);
-    TERM hot := (8, 0) (10, 1) (15, 1) (35, 1);
+    TERM freezing_temperature_wet := (-15, 1) (-12, 1) (-7, 0);
+    TERM cool_temperature_wet := (-8, 0) (-5, 1) (-2, 0);
+    TERM moderate_temperature_wet := (-3, 0) (0, 1) (3, 0);
+    TERM warm_temperature_wet := (2, 0) (6, 1) (9, 0);
+    TERM hot_temperature_wet := (8, 0) (10, 1) (15, 1) (35, 1);
 END_FUZZIFY
 
 FUZZIFY temperature_wet_spring
-    TERM freezing := (-15, 1) (0, 1) (5, 0);
-    TERM cool := (4, 0) (7, 1) (10, 0);
-    TERM moderate := (9, 0) (12, 1) (15, 0);  // + 12
-    TERM warm := (14, 0) (18, 1) (21, 0);
-    TERM hot := (20, 0) (22, 1) (27, 1) (35, 1);
+    TERM freezing_temperature_wet := (-15, 1) (0, 1) (5, 0);
+    TERM cool_temperature_wet := (4, 0) (7, 1) (10, 0);
+    TERM moderate_temperature_wet := (9, 0) (12, 1) (15, 0);  // + 12
+    TERM warm_temperature_wet := (14, 0) (18, 1) (21, 0);
+    TERM hot_temperature_wet := (20, 0) (22, 1) (27, 1) (35, 1);
 END_FUZZIFY
 
 FUZZIFY temperature_wet_summer
-    TERM freezing := (-15, 1) (6, 1) (11, 0);
-    TERM cool := (10, 0) (13, 1) (16, 0);
-    TERM moderate := (15, 0) (18, 1) (21, 0); // + 18
-    TERM warm := (20, 0) (24, 1) (27, 0);
-    TERM hot := (26, 0) (28, 1) (32, 1) (35, 1);
+    TERM freezing_temperature_wet := (-15, 1) (6, 1) (11, 0);
+    TERM cool_temperature_wet := (10, 0) (13, 1) (16, 0);
+    TERM moderate_temperature_wet := (15, 0) (18, 1) (21, 0); // + 18
+    TERM warm_temperature_wet := (20, 0) (24, 1) (27, 0);
+    TERM hot_temperature_wet := (26, 0) (28, 1) (32, 1) (35, 1);
 END_FUZZIFY
 
 FUZZIFY temperature_wet_autumn

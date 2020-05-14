@@ -1,5 +1,6 @@
 package model;
 
+//import depr.DeprFuzzifyWeather;
 import enumerate.Season;
 import javafx.util.Pair;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -43,8 +45,8 @@ public class Weather {
         this.heightOfFallenSnow = heightOfFallenSnow;
         this.season = SeasonFactory.getSeason(date);
     }
-
-    public FuzzifyWeather fuzzify(FIS fis, double activation) {
+/*
+    public DeprFuzzifyWeather fuzzify(FIS fis, double activation) {
         fis.getVariable("dampness").setUniverseMax(100);
         fis.getVariable("dampness").setUniverseMin(0);
         fis.getVariable("day_time").setUniverseMax(24);
@@ -65,7 +67,7 @@ public class Weather {
                 "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
                 "temperature", "temperature_wet");
 
-        FuzzifyWeather fWeather = new FuzzifyWeather();
+        DeprFuzzifyWeather fWeather = new DeprFuzzifyWeather();
         for (String varName : variables) {
             Variable var;
             if (varName.contains("temperature")) {
@@ -82,10 +84,45 @@ public class Weather {
             fWeather.setField(varName, value);
         }
         fWeather.setSeason(getSeason());
-        //JFuzzyChart.get().chart(fis.getVariable("temperature_" + getSeason().name().toLowerCase()),true);
-        //JFuzzyChart.get().chart(fis.getVariable("temperature_wet_" + getSeason().name().toLowerCase()),true);
-        //JFuzzyChart.get().chart(fis.getVariable("snow"), true);
-        //JFuzzyChart.get().chart(fis.getVariable("cloudiness"), true);
+        return fWeather;
+    }*/
+
+    public SimpleFuzzifyWeather fuzzify(FIS fis) {
+        fis.getVariable("dampness").setUniverseMax(100);
+        fis.getVariable("dampness").setUniverseMin(0);
+        fis.getVariable("day_time").setUniverseMax(24);
+
+        fis.setVariable("day_time", getDate().getHour());
+        fis.setVariable("cloudiness", getCloudiness());
+        fis.setVariable("dampness", getDampness());
+        fis.setVariable("wind_velocity", getVelocityOfWind());
+        fis.setVariable("precipitation_six", getPrecipitationAfterSixHours());
+        fis.setVariable("snow", getHeightOfFallenSnow());
+        fis.setVariable("pressure_station", getPressureAtStationLevel());
+        fis.setVariable("pressure_sea", getPressureAtSeaLevel());
+        fis.setVariable("temperature_" + getSeason().name().toLowerCase(), getTemperature());
+        fis.setVariable("temperature_wet_" + getSeason().name().toLowerCase(), getTemperatureOfWetThermometer());
+        fis.evaluate();
+
+        List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
+                "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
+                "temperature", "temperature_wet");
+
+        SimpleFuzzifyWeather fWeather = new SimpleFuzzifyWeather();
+        for (String varName : variables) {
+            Variable var;
+            if (varName.contains("temperature")) {
+                var = fis.getVariable(varName + '_' + getSeason().name().toLowerCase());
+            }else {
+                var = fis.getVariable(varName);
+            }
+            List<Pair<String, Double>> terms = var.getLinguisticTerms().keySet().stream()
+                    .map(str -> new Pair<>(str, var.getMembership(str)))
+                    .collect(Collectors.toList());
+            //fWeather.setField(varName, value);
+            fWeather.addTerms(terms);
+        }
+        fWeather.setSeason(getSeason());
         return fWeather;
     }
 

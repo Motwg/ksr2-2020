@@ -1,28 +1,31 @@
-package model;
+package depr;
 
 import enumerate.Season;
+import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
+import java.util.List;
+
 @Getter
+@Setter
 @ToString
 public class FuzzifyWeather {
-    private String velocityOfWind;
-    private String dayTime;
-    private String cloudiness;
-    private String temperature;
-    private String temperatureOfWetThermometer;
-    private String dampness;
-    private String pressureAtStationLevel;
-    private String pressureAtSeaLevel;
-    private String precipitationAfterSixHours;
-    private String heightOfFallenSnow;
-    private String weather;
+    private List<Pair<String, Double>> velocityOfWind;
+    private List<Pair<String, Double>> dayTime;
+    private List<Pair<String, Double>> cloudiness;
+    private List<Pair<String, Double>> temperature;
+    private List<Pair<String, Double>> temperatureOfWetThermometer;
+    private List<Pair<String, Double>> dampness;
+    private List<Pair<String, Double>> pressureAtStationLevel;
+    private List<Pair<String, Double>> pressureAtSeaLevel;
+    private List<Pair<String, Double>> precipitationAfterSixHours;
+    private List<Pair<String, Double>> heightOfFallenSnow;
+    private List<Pair<String, Double>> weather;
     private Season season;
 
-    public void setField(String fieldName, String fieldValue) {
+    public void setField(String fieldName, List<Pair<String, Double>> fieldValue) {
         switch (fieldName) {
             case "wind_velocity": setVelocityOfWind(fieldValue); break;
             case "day_time": setDayTime(fieldValue); break;
@@ -38,7 +41,7 @@ public class FuzzifyWeather {
         }
     }
 
-    public String getField(String fieldName) {
+    public List<Pair<String, Double>> getField(String fieldName) {
         switch (fieldName) {
             case "wind_velocity": return getVelocityOfWind();
             case "day_time": return getDayTime();
@@ -51,12 +54,7 @@ public class FuzzifyWeather {
             case "temperature": return getTemperature();
             case "temperature_wet": return  getTemperatureOfWetThermometer();
             case "weather": return getWeather();
-            default: return "";
+            default: return null;
         }
     }
-
-    public void setSeason(Season season) {
-        this.season = season;
-    }
 }
-
