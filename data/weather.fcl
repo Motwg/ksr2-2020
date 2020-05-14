@@ -57,7 +57,8 @@ END_FUZZIFY
 
 FUZZIFY snow
     TERM almost_none := (0, 1) (0.4, 0);
-	TERM present := (0.2, 0) (0.5, 1) (2.5, 1);
+	TERM some := (0.2, 0) (0.5, 1) (2.5, 1);
+	TERM much := (2, 0) (3, 1) (4, 1);
 END_FUZZIFY
 
 FUZZIFY pressure_station

@@ -54,7 +54,7 @@ public class ReportGenerator {
                 .map(Pair::getKey)
                 .orElse("");
     }
-
+/*
     public void generateReport() {
         List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
                 "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
@@ -80,8 +80,8 @@ public class ReportGenerator {
         System.out.println(freq);
         System.out.println(builder.toString());
     }
-
-    public void generateReport1() {
+*/
+    public void generateReport() {
         List<String> variables = Arrays.asList("day_time", "cloudiness", "dampness", "wind_velocity",
                 "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
                 "temperature", "temperature_wet");
@@ -89,22 +89,17 @@ public class ReportGenerator {
         for (String var : variables) {
             terms = getTerms(var);
             System.out.println(var + "=" + terms);
-            /*terms.entrySet().stream().forEach(term -> {
-                List<String> newList = freq.getOrDefault(term.getValue(), new ArrayList<>());
-                newList.add(term.getKey());//(var + " " + term.getKey());
-                freq.put(term.getValue(), newList);
-            });*/
         }
         StringBuilder builder = new StringBuilder();
         terms = getTerms("temperature");
         terms.entrySet().stream().forEach(term ->
-                builder.append(term.getValue() + " days were " + term.getKey() + "\n"));
+                builder.append("temperature in " + term.getValue() + " days was " + term.getKey() + "\n"));
         terms = getTerms("cloudiness");
         terms.entrySet().stream().forEach(term ->
                 builder.append(term.getValue() + " days were " + term.getKey() + "\n"));
         terms = getTerms("dampness");
         terms.entrySet().stream().forEach(term ->
-                builder.append("dampness was " + term.getValue() + " in " + term.getKey() + " days\n"));
+                builder.append("dampness was in " + term.getValue() + " days " + term.getKey() + "\n"));
         terms = getTerms("wind_velocity");
         terms.entrySet().stream().forEach(term ->
                 builder.append(term.getValue() + " days were " + term.getKey() + "\n"));
