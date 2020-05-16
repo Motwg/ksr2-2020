@@ -79,12 +79,12 @@ public class Measures {
         return 2 * Math.pow(0.5, summarizer.getTerms().size());
     }
 
-    public double t6() {
+    public double t6(String term) {
         //todo 0 zastąpić in(Q)
         return 1 - 0;
     }
 
-    public double t7() {
+    public double t7(String term) {
         //todo
         return 1;
     }

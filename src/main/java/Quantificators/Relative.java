@@ -32,4 +32,12 @@ public class Relative implements IQuantifier {
         fis.setVariable("percentage", sum);
         return fis.getVariable("percentage").getMembership(term);
     }
+
+    public double t7(String term) {
+        double sum = weatherList.stream()
+                .mapToDouble(w -> summarizer.summarize(w).getValue())
+                .sum() / weatherList.size();
+        fis.setVariable("percentage", sum);
+        return fis.getVariable("percentage").getMembership(term) ;
+    }
 }
