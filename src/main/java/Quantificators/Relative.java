@@ -34,14 +34,13 @@ public class Relative implements IQuantifier {
     }
 
     public double t6(String term) {
-        return 1;
+        if (Math.sqrt(1 - t1(term)) == 0)
+            return 0.06;
+        else
+            return Math.sqrt(1 - t1(term));
     }
 
     public double t7(String term) {
-        double sum = weatherList.stream()
-                .mapToDouble(w -> summarizer.summarize(w).getValue())
-                .sum() / weatherList.size();
-        fis.setVariable("percentage", sum);
-        return fis.getVariable("percentage").getMembership(term) ;
+        return Math.sqrt(0.8 * t6(term));
     }
 }

@@ -35,6 +35,12 @@ public class Summarizer {
         }
     }
 
+    public List<Double> t2r(SimpleFuzzifyWeather sfw) {
+        return terms.stream()
+                .map(term -> sfw.getTerm(term).getValue())
+                .collect(Collectors.toList());
+    }
+
     public List<Integer> t4r(SimpleFuzzifyWeather sfw) {
         return terms.stream()
                 .map(term -> sfw.getTerm(term).getValue())
@@ -46,4 +52,5 @@ public class Summarizer {
                 })
                 .collect(Collectors.toList());
     }
+
 }

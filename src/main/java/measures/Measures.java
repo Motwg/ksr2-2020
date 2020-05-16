@@ -31,8 +31,28 @@ public class Measures {
     }
 
     public double t2() {
-        //todo 1 zastąpić: in(S_n) *=
-        return 1 - Math.pow(1, 1.0 / (double) summarizer.getTerms().size());
+        List<List<Integer>> ints;
+        if(quantifier == null)
+            ints = weatherList.stream()
+                    .map(w -> summarizer.t4r(w))
+                    .collect(Collectors.toList());
+        else
+            ints = quantifier.getWeatherList().stream()
+                    .map(w -> summarizer.t4r(w))
+                    .collect(Collectors.toList());
+
+        List<Double> rList = new ArrayList<>();
+        for (int i=0; i < summarizer.getTerms().size(); ++i) {
+            double value = 0;
+            for (List<Integer> summators : ints) {
+                value += summators.get(i);
+            }
+            rList.add(value / (double)weatherList.size());
+        }
+        double value = 1;
+        for(Double i : rList)
+            value *= i;
+        return 1 - Math.pow(value, 1.0 / (double) summarizer.getTerms().size());
     }
 
     public double t3() {
@@ -67,12 +87,12 @@ public class Measures {
             for (List<Integer> summators : ints) {
                 value += summators.get(i);
             }
-            rList.add(value / (double)weatherList.size());
+            rList.add(value / (double)quantifier.getWeatherList().size());
         }
         double value = 1;
         for(Double i : rList)
             value *= i;
-        return Math.abs(value - t3());
+        return 1 - Math.pow(value, 1.0 / (double) summarizer.getTerms().size());
     }
 
     public double t5() {
@@ -80,28 +100,47 @@ public class Measures {
     }
 
     public double t6(String term) {
-        //todo 0 zastąpić in(Q)
-        return 1 - 0;
+        return quantifier.t6(term);
     }
 
     public double t7(String term) {
-        //todo
-        return 1;
+        return quantifier.t7(term);
     }
 
     public double t8() {
-        //todo
-        return 1;
+        List<List<Double>> values;
+        if(quantifier == null)
+            values = weatherList.stream()
+                    .map(w -> summarizer.t2r(w))
+                    .collect(Collectors.toList());
+        else
+            values = quantifier.getWeatherList().stream()
+                    .map(w -> summarizer.t2r(w))
+                    .collect(Collectors.toList());
+
+        List<Double> rList = new ArrayList<>();
+        for (int i=0; i < summarizer.getTerms().size(); ++i) {
+            double value = 0;
+            for (List<Double> summators : values) {
+                value += summators.get(i);
+            }
+            rList.add(value / (double)quantifier.getWeatherList().size());
+        }
+        double value = 1;
+        for(Double i : rList)
+            value *= i;
+        return 1 - Math.pow(value, 1.0 / (double) summarizer.getTerms().size());
     }
 
     public double t9() {
-        //todo
-        return 1;
+        return 1 - (double)quantifier.getWeatherList().size() / (double)weatherList.size();
     }
 
     public double t10() {
-        //todo
-        return 1;
+        final String term = qualifier.getLastTerm();
+        return 1 - qualifier.getFullWeatherList().stream()
+                .mapToDouble(w -> w.getTerm(term).getValue())
+                .sum() / (double)weatherList.size();
     }
 
     public double t11() {

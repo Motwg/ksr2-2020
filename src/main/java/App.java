@@ -46,11 +46,16 @@ public class App {
                 .build();
         System.out.println(absolute.t1("more_than_1000"));
         System.out.println(measures.t1("about_half"));
+        System.out.println(measures.t2());
         System.out.println(measures.t3());
         System.out.println(measures.t4());
         System.out.println(measures.t5());
-
-
+        System.out.println(measures.t6("about_half"));
+        System.out.println(measures.t7("about_half"));
+        System.out.println(measures.t8());
+        System.out.println(measures.t9());
+        System.out.println(measures.t10());
+        System.out.println(measures.t11());
         /*
         List<FuzzifyWeather> fWeatherData = weatherData.stream()
                 //.limit(15)
