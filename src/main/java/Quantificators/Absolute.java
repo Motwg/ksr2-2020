@@ -31,4 +31,12 @@ public class Absolute implements IQuantifier {
         fis.setVariable("absolute", sum);
         return fis.getVariable("absolute").getMembership(term);
     }
+
+    public double t6(String term) {
+        return 1;
+    }
+
+    public double t7(String term) {
+        return 1;
+    }
 }
