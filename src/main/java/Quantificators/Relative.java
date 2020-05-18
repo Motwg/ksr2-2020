@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
+import utils.Consts;
 import utils.Summarizer;
+import utils.TermAnaliser;
 
 import java.util.List;
 
@@ -16,31 +18,29 @@ public class Relative implements IQuantifier {
 
     private Summarizer summarizer;
     private List<SimpleFuzzifyWeather> weatherList;
-    private final String inputFileName = "occ.fcl";
     private FIS fis;
+    private TermAnaliser termAnaliser;
 
-    public Relative(Summarizer summarizer, List<SimpleFuzzifyWeather> weatherList) {
+    public Relative(Summarizer summarizer, List<SimpleFuzzifyWeather> weatherList, FIS fis) {
         this.summarizer = summarizer;
         this.weatherList = weatherList;
-        this.fis = FlcReader.load(inputFileName);
+        this.fis = fis;
+        this.termAnaliser = new TermAnaliser(fis);
     }
 
     public double t1(String term) {
         double sum = weatherList.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
                 .sum() / weatherList.size();
-        fis.setVariable("percentage", sum);
-        return fis.getVariable("percentage").getMembership(term);
+        fis.setVariable(Consts.RELATIVE_VAR_NAME, sum);
+        return fis.getVariable(Consts.RELATIVE_VAR_NAME).getMembership(term);
     }
 
     public double t6(String term) {
-        if (Math.sqrt(1 - t1(term)) == 0)
-            return 0.06;
-        else
-            return Math.sqrt(1 - t1(term));
+        return 1 - termAnaliser.countIn(term);
     }
 
     public double t7(String term) {
-        return Math.sqrt(0.8 * t6(term));
+        return 1 - termAnaliser.countQSupp(term) / termAnaliser.countX(term);
     }
 }

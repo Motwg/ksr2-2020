@@ -7,8 +7,10 @@ import model.Weather;
 import net.sourceforge.jFuzzyLogic.FIS;
 import Readers.DataReader;
 import Readers.FlcReader;
+import utils.Consts;
 import utils.Qualifier;
 import utils.Summarizer;
+import utils.TermAnaliser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +24,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         List<Weather> weatherData = DataReader.readWeatherFromCsv(FIRST_FILENAME);
         weatherData.addAll(DataReader.readWeatherFromCsv(SECOND_FILENAME));
-        FIS fis = FlcReader.load("weather.fcl");
+        FIS fis = FlcReader.load(Consts.INPUT_FCL_NAME);
 
         List<SimpleFuzzifyWeather> fWeatherData = weatherData.stream()
                 .map(w -> w.fuzzify(fis))
@@ -31,9 +33,9 @@ public class App {
         Qualifier qualifier = new Qualifier(fWeatherData);
         List<SimpleFuzzifyWeather> night = qualifier.qualify("night");
 
-        Summarizer summarizer = new Summarizer(Arrays.asList("freezing_temperature"), Operator.or);
-        Absolute absolute = new Absolute(summarizer, night);
-        Relative relative = new Relative(summarizer, night); // jesli jest quantifier, ograniczony set! (night)
+        Summarizer summarizer = new Summarizer(Arrays.asList("freezing_temperature", "optimal_dampness"), Operator.and);
+        Absolute absolute = new Absolute(summarizer, night, fis);
+        Relative relative = new Relative(summarizer, night, fis); // jesli jest quantifier, ograniczony set! (night)
                                                             // jesli nie ma, caly (fWeatherData)
 
         //Quantifier(X)             Qualifier(nocą)  Summarizer(bardzo zimno, ...)
@@ -43,33 +45,20 @@ public class App {
                 .summarizer(summarizer)
                 .qualifier(qualifier)
                 .quantifier(relative)// w tym panu powinien byc set wygenerowany przez qualifier
+                .fis(fis)
                 .build();
         System.out.println(absolute.t1("more_than_1000"));
-        System.out.println(measures.t1("about_half"));
-        System.out.println(measures.t2());
-        System.out.println(measures.t3());
-        System.out.println(measures.t4());
-        System.out.println(measures.t5());
-        System.out.println(measures.t6("about_half"));
-        System.out.println(measures.t7("about_half"));
-        System.out.println(measures.t8());
-        System.out.println(measures.t9());
-        System.out.println(measures.t10());
-        System.out.println(measures.t11());
-        /*
-        List<FuzzifyWeather> fWeatherData = weatherData.stream()
-                //.limit(15)
-                .map(weather -> weather.fuzzify(fis, activation))
-                .collect(Collectors.toList());
-        List<FuzzifyWeather> filteredData = fWeatherData.stream()
-                .filter(weather -> weather.getSeason() == Season.Winter)
-                //.filter(weather -> weather.getDayTime().compareTo("morning") == 0)
-                .collect(Collectors.toList());
-         */
-
-        //ReportGenerator generator = new ReportGenerator(filteredData);
-        //generator.generateReport();
+        System.out.println("t1: " + measures.t1("about_half"));
+        System.out.println("t2: " + measures.t2());
+        System.out.println("t3: " + measures.t3());
+        System.out.println("t4: " + measures.t4());
+        System.out.println("t5: " + measures.t5());
+        System.out.println("t6: " + measures.t6("about_half"));
+        System.out.println("t7: " + measures.t7("about_half"));
+        System.out.println("t8: " + measures.t8());
+        System.out.println("t9: " + measures.t9());
+        System.out.println("t10: " + measures.t10());
+        System.out.println("t11: " + measures.t11());
     }
-
 
 }
