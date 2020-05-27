@@ -1,6 +1,6 @@
 package measures;
 
-import Quantificators.IQuantifier;
+import Quantificators.IQuantificator;
 import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
@@ -20,17 +20,18 @@ public class Measures {
     List<SimpleFuzzifyWeather> weatherList;
     Summarizer summarizer;
     // do quantifiera powinien trafić set z qualifiera, jesli natomiast brakuje qualifiera - caly set
-    IQuantifier quantifier;
+    IQuantificator quantificator;
     Qualifier qualifier;
     FIS fis;
+    TermAnaliser termAnaliser;
 
-    public double t1(String term) {
-        if(quantifier == null)
+    public double t1() {
+        if(quantificator == null)
             return weatherList.stream()
                     .mapToDouble(w -> summarizer.summarize(w).getValue())
                     .sum();
         else
-            return quantifier.t1(term);
+            return quantificator.t1();
     }
 
     public double t2() {
@@ -42,28 +43,28 @@ public class Measures {
     }
 
     public double t3() {
-        if(quantifier == null)
+        if(quantificator == null)
             return weatherList.stream()
                     .mapToDouble(w -> summarizer.summarize(w).getValue())
                     .filter(value -> value > 0)
                     .map(value -> 1)
                     .sum() / weatherList.size();
         else
-            return  quantifier.getWeatherList().stream()
+            return  quantificator.getWeatherList().stream()
                     .mapToDouble(w -> summarizer.summarize(w).getValue())
                     .filter(value -> value > 0)
                     .map(value -> 1)
-                    .sum() / quantifier.getWeatherList().size();
+                    .sum() / quantificator.getWeatherList().size();
     }
 
     public double t4() {
         List<List<Integer>> ints;
-        if(quantifier == null)
+        if(quantificator == null)
              ints = weatherList.stream()
                     .map(w -> summarizer.t4r(w))
                     .collect(Collectors.toList());
         else
-            ints = quantifier.getWeatherList().stream()
+            ints = quantificator.getWeatherList().stream()
                     .map(w -> summarizer.t4r(w))
                     .collect(Collectors.toList());
 
@@ -73,7 +74,7 @@ public class Measures {
             for (List<Integer> summators : ints) {
                 value += summators.get(i);
             }
-            rList.add(value / (double)quantifier.getWeatherList().size());
+            rList.add(value / (double) quantificator.getWeatherList().size());
         }
         double value = 1;
         for(Double i : rList)
@@ -85,12 +86,12 @@ public class Measures {
         return 2 * Math.pow(0.5, summarizer.getTerms().size());
     }
 
-    public double t6(String term) {
-        return quantifier.t6(term);
+    public double t6() {
+        return 1 - termAnaliser.countIn(quantificator.getTerm());
     }
 
-    public double t7(String term) {
-        return quantifier.t7(term);
+    public double t7() {
+        return 1 - termAnaliser.countQSupp(quantificator.getTerm()) / termAnaliser.countX(quantificator.getTerm());
     }
 
     public double t8() {
@@ -117,7 +118,7 @@ public class Measures {
         return 1;
     }
 
-    public double overallT(List<Double> weights, String term) {
+    public double overallT(List<Double> weights) {
         if (weights.size() != 11) {
             throw new RuntimeException("Nieprawidłowa ilość wag");
         } else if(0.99 > weights.stream().mapToDouble(a -> a).sum() ||
@@ -125,13 +126,13 @@ public class Measures {
             throw new RuntimeException("Suma wag jest różna od 1");
         else {
             List<Double> values = Arrays.asList(
-                    t1(term) * weights.get(0),
+                    t1() * weights.get(0),
                     t2() * weights.get(1),
                     t3() * weights.get(2),
                     t4() * weights.get(3),
                     t5() * weights.get(4),
-                    t6(term) * weights.get(5),
-                    t7(term) * weights.get(6),
+                    t6() * weights.get(5),
+                    t7() * weights.get(6),
                     t8() * weights.get(7),
                     t9() * weights.get(8),
                     t10() * weights.get(9),

@@ -1,6 +1,5 @@
 package Quantificators;
 
-import Readers.FlcReader;
 import lombok.Getter;
 import lombok.Setter;
 import model.SimpleFuzzifyWeather;
@@ -14,21 +13,20 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Relative implements IQuantifier {
+public class Relative implements IQuantificator {
 
     private Summarizer summarizer;
     private List<SimpleFuzzifyWeather> weatherList;
     private FIS fis;
-    private TermAnaliser termAnaliser;
+    private String term;
 
-    public Relative(Summarizer summarizer, List<SimpleFuzzifyWeather> weatherList, FIS fis) {
+    public Relative(Summarizer summarizer, List<SimpleFuzzifyWeather> weatherList, FIS fis, String term) {
         this.summarizer = summarizer;
         this.weatherList = weatherList;
         this.fis = fis;
-        this.termAnaliser = new TermAnaliser(fis);
     }
 
-    public double t1(String term) {
+    public double t1() {
         double sum = weatherList.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
                 .sum() / weatherList.size();
@@ -36,11 +34,4 @@ public class Relative implements IQuantifier {
         return fis.getVariable(Consts.RELATIVE_VAR_NAME).getMembership(term);
     }
 
-    public double t6(String term) {
-        return 1 - termAnaliser.countIn(term);
-    }
-
-    public double t7(String term) {
-        return 1 - termAnaliser.countQSupp(term) / termAnaliser.countX(term);
-    }
 }

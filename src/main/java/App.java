@@ -10,7 +10,6 @@ import Readers.FlcReader;
 import utils.Consts;
 import utils.Qualifier;
 import utils.Summarizer;
-import utils.TermAnaliser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,9 +33,10 @@ public class App {
         List<SimpleFuzzifyWeather> night = qualifier.qualify("night");
 
         Summarizer summarizer = new Summarizer(Arrays.asList("freezing_temperature", "optimal_dampness"), Operator.and);
-        Absolute absolute = new Absolute(summarizer, night, fis);
-        Relative relative = new Relative(summarizer, night, fis); // jesli jest quantifier, ograniczony set! (night)
-                                                            // jesli nie ma, caly (fWeatherData)
+        Absolute absolute = new Absolute(summarizer, night, fis, "more_than_1000");
+        Relative relative = new Relative(summarizer, night, fis, "about_half");
+        // jesli jest quantifier, ograniczony set! (night)
+        // jesli nie ma, caly (fWeatherData)
 
         //Quantifier(X)             Qualifier(nocą)  Summarizer(bardzo zimno, ...)
         //w X pomiarów przeprowadzonych nocą było bardzo zimno //i ... lub ...
@@ -44,17 +44,17 @@ public class App {
                 .weatherList(fWeatherData) //zawsze cały set
                 .summarizer(summarizer)
                 .qualifier(qualifier)
-                .quantifier(relative)// w tym panu powinien byc set wygenerowany przez qualifier
+                .quantificator(relative)// w tym panu powinien byc set wygenerowany przez qualifier
                 .fis(fis)
                 .build();
-        System.out.println(absolute.t1("more_than_1000"));
-        System.out.println("t1: " + measures.t1("about_half"));
+        System.out.println(absolute.t1());
+        System.out.println("t1: " + measures.t1());
         System.out.println("t2: " + measures.t2());
         System.out.println("t3: " + measures.t3());
         System.out.println("t4: " + measures.t4());
         System.out.println("t5: " + measures.t5());
-        System.out.println("t6: " + measures.t6("about_half"));
-        System.out.println("t7: " + measures.t7("about_half"));
+        System.out.println("t6: " + measures.t6());
+        System.out.println("t7: " + measures.t7());
         System.out.println("t8: " + measures.t8());
         System.out.println("t9: " + measures.t9());
         System.out.println("t10: " + measures.t10());
