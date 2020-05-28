@@ -18,18 +18,18 @@ public class LinguisticSummary {
     List<SimpleFuzzifyWeather> weatherList;
     Summarizer summarizer;
     // do quantifiera powinien trafić set z qualifiera, jesli natomiast brakuje qualifiera - caly set
-    IQuantifier quantificator;
+    IQuantifier quantifier;
     Qualifier qualifier;
     FIS fis;
     TermAnalyser termAnalyser;
 
     public double t1() {
-        if(quantificator == null)
+        if(quantifier == null)
             return weatherList.stream()
                     .mapToDouble(w -> summarizer.summarize(w).getValue())
                     .sum();
         else
-            return quantificator.t1();
+            return quantifier.t1();
     }
 
     public double t2() {
@@ -41,28 +41,28 @@ public class LinguisticSummary {
     }
 
     public double t3() {
-        if(quantificator == null)
+        if(quantifier == null)
             return weatherList.stream()
                     .mapToDouble(w -> summarizer.summarize(w).getValue())
                     .filter(value -> value > 0)
                     .map(value -> 1)
                     .sum() / weatherList.size();
         else
-            return  quantificator.getWeatherList().stream()
+            return  quantifier.getWeatherList().stream()
                     .mapToDouble(w -> summarizer.summarize(w).getValue())
                     .filter(value -> value > 0)
                     .map(value -> 1)
-                    .sum() / quantificator.getWeatherList().size();
+                    .sum() / quantifier.getWeatherList().size();
     }
 
     public double t4() {
         List<List<Integer>> ints;
-        if(quantificator == null)
+        if(quantifier == null)
              ints = weatherList.stream()
                     .map(w -> summarizer.t4r(w))
                     .collect(Collectors.toList());
         else
-            ints = quantificator.getWeatherList().stream()
+            ints = quantifier.getWeatherList().stream()
                     .map(w -> summarizer.t4r(w))
                     .collect(Collectors.toList());
 
@@ -72,7 +72,7 @@ public class LinguisticSummary {
             for (List<Integer> summators : ints) {
                 value += summators.get(i);
             }
-            rList.add(value / (double) quantificator.getWeatherList().size());
+            rList.add(value / (double) quantifier.getWeatherList().size());
         }
         double value = 1;
         for(Double i : rList)
@@ -85,11 +85,11 @@ public class LinguisticSummary {
     }
 
     public double t6() {
-        return 1 - termAnalyser.countIn(quantificator.getTerm());
+        return 1 - termAnalyser.countIn(quantifier.getTerm());
     }
 
     public double t7() {
-        return 1 - termAnalyser.countQSupp(quantificator.getTerm()) / termAnalyser.countX(quantificator.getTerm());
+        return 1 - termAnalyser.countQSupp(quantifier.getTerm()) / termAnalyser.countX(quantifier.getTerm());
     }
 
     public double t8() {

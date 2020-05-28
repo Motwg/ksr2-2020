@@ -44,7 +44,7 @@ public class App {
                 .weatherList(fWeatherData) //zawsze cały set
                 .summarizer(summarizer)
                 .qualifier(qualifier)
-                .quantificator(relative)// w tym panu powinien byc set wygenerowany przez qualifier
+                .quantifier(relative)// w tym panu powinien byc set wygenerowany przez qualifier
                 .fis(fis)
                 .build();
         System.out.println(absolute.t1());
