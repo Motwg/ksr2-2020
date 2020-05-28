@@ -7,7 +7,6 @@ import enumerate.Season;
 import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
-import utils.TermAnalyser;
 
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class FormTwo implements MultiSubjectLinguisticSummary {
     IQuantifier quantifier;
     Qualifier qualifier;
     FIS fis;
-    TermAnalyser termAnalyser;
 
     public double t() {
         return 0;

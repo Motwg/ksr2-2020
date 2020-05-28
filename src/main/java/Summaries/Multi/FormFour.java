@@ -1,13 +1,10 @@
 package Summaries.Multi;
 
-import Summaries.Qualifier;
-import Summaries.Quantifiers.IQuantifier;
 import Summaries.Summarizer;
 import enumerate.Season;
 import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
-import utils.TermAnalyser;
 
 import java.util.List;
 
@@ -20,9 +17,9 @@ public class FormFour implements MultiSubjectLinguisticSummary {
     List<SimpleFuzzifyWeather> weatherList;
     Summarizer summarizer;
     FIS fis;
-    TermAnalyser termAnalyser;
 
     public double t() {
+
         return 0;
     }
 

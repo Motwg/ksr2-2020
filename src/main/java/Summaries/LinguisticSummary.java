@@ -21,7 +21,6 @@ public class LinguisticSummary {
     IQuantifier quantifier;
     Qualifier qualifier;
     FIS fis;
-    TermAnalyser termAnalyser;
 
     public double t1() {
         if(quantifier == null)
@@ -85,11 +84,13 @@ public class LinguisticSummary {
     }
 
     public double t6() {
-        return 1 - termAnalyser.countIn(quantifier.getTerm());
+        TermAnalyser analyser = new TermAnalyser(fis);
+        return 1 - analyser.countIn(quantifier.getTerm());
     }
 
     public double t7() {
-        return 1 - termAnalyser.countQSupp(quantifier.getTerm()) / termAnalyser.countX(quantifier.getTerm());
+        TermAnalyser analyser = new TermAnalyser(fis);
+        return 1 - analyser.countQSupp(quantifier.getTerm()) / analyser.countX(quantifier.getTerm());
     }
 
     public double t8() {
