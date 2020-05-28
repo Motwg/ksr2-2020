@@ -56,6 +56,7 @@ public class TermAnalyser {
                     var = fis.getVariable(varName + "_spring");
                 else
                     var = fis.getVariable(varName);
+                fis.getVariable(var.getName()).getMembershipFunction(term);
                 return var.getUniverseMax() - var.getUniverseMin();
             } catch (Exception e) {}
         }

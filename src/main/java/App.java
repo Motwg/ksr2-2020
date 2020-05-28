@@ -1,15 +1,17 @@
+import Readers.DataReader;
+import Readers.FlcReader;
+import Summaries.LinguisticSummary;
+import Summaries.Multi.FormOne;
+import Summaries.Qualifier;
 import Summaries.Quantifiers.Absolute;
 import Summaries.Quantifiers.Relative;
+import Summaries.Summarizer;
 import enumerate.Operator;
-import Summaries.LinguisticSummary;
+import enumerate.Season;
 import model.SimpleFuzzifyWeather;
 import model.Weather;
 import net.sourceforge.jFuzzyLogic.FIS;
-import Readers.DataReader;
-import Readers.FlcReader;
 import utils.Constants;
-import Summaries.Qualifier;
-import Summaries.Summarizer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,14 +31,12 @@ public class App {
                 .map(w -> w.fuzzify(fis))
                 .collect(Collectors.toList());
 
-        Qualifier qualifier = new Qualifier(fWeatherData);
-        List<SimpleFuzzifyWeather> night = qualifier.qualify("night");
+        Qualifier qualifier = new Qualifier("night");
+        List<SimpleFuzzifyWeather> night = qualifier.qualify(fWeatherData);
 
-        Summarizer summarizer = new Summarizer(Arrays.asList("freezing_temperature", "optimal_dampness"), Operator.and);
-        Absolute absolute = new Absolute(summarizer, night, fis, "more_than_1000");
-        Relative relative = new Relative(summarizer, night, fis, "about_half");
-        // jesli jest quantifier, ograniczony set! (night)
-        // jesli nie ma, caly (fWeatherData)
+        Summarizer summarizer = new Summarizer(Arrays.asList("cool_temperature"), Operator.and);
+        Absolute absolute = new Absolute(fis, "more_than_1000");
+        Relative relative = new Relative(fis, "about_half");
 
         //Quantifier(X)             Qualifier(nocą)  Summarizer(bardzo zimno, ...)
         //w X pomiarów przeprowadzonych nocą było bardzo zimno //i ... lub ...
@@ -44,10 +44,9 @@ public class App {
                 .weatherList(fWeatherData) //zawsze cały set
                 .summarizer(summarizer)
                 .qualifier(qualifier)
-                .quantifier(relative)// w tym panu powinien byc set wygenerowany przez qualifier
+                .quantifier(relative)
                 .fis(fis)
                 .build();
-        System.out.println(absolute.t1());
         System.out.println("t1: " + linguisticSummary.t1());
         System.out.println("t2: " + linguisticSummary.t2());
         System.out.println("t3: " + linguisticSummary.t3());
@@ -59,6 +58,10 @@ public class App {
         System.out.println("t9: " + linguisticSummary.t9());
         System.out.println("t10: " + linguisticSummary.t10());
         System.out.println("t11: " + linguisticSummary.t11());
+
+        FormOne ponadpolowawiosnawodniesieniudozimyjestchlodna =
+                new FormOne(Season.Spring, Season.Winter, fWeatherData, summarizer, relative, fis);
+        System.out.println(ponadpolowawiosnawodniesieniudozimyjestchlodna.t());
     }
 
 }

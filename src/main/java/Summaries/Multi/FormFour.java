@@ -2,11 +2,14 @@ package Summaries.Multi;
 
 import Summaries.Summarizer;
 import enumerate.Season;
+import lombok.AllArgsConstructor;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@AllArgsConstructor
 public class FormFour implements MultiSubjectLinguisticSummary {
     Season season1;
     Season season2;
@@ -17,7 +20,19 @@ public class FormFour implements MultiSubjectLinguisticSummary {
     FIS fis;
 
     public double t() {
-        return 0;
+        List<SimpleFuzzifyWeather> p1 = weatherList.stream()
+                .filter(weather -> weather.getSeason() == season1)
+                .collect(Collectors.toList());
+        List<SimpleFuzzifyWeather> p2 = weatherList.stream()
+                .filter(weather -> weather.getSeason() == season2)
+                .collect(Collectors.toList());
+        double sP1 = p1.stream()
+                .mapToDouble(w -> summarizer.summarize(w).getValue())
+                .sum();
+        double sP2 = p2.stream()
+                .mapToDouble(w -> summarizer.summarize(w).getValue())
+                .sum();
+        return sP1 / (sP1 + sP2);
     }
 
 }

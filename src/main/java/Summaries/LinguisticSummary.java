@@ -1,7 +1,7 @@
 package Summaries;
 
+import Summaries.Quantifiers.Absolute;
 import Summaries.Quantifiers.IQuantifier;
-import Summaries.Quantifiers.Relative;
 import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
@@ -31,11 +31,10 @@ public class LinguisticSummary {
         double sum = newWeatherList.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
                 .sum();
-
         if(quantifier == null)
             return sum;
-        else if (quantifier instanceof Relative)
-            return quantifier.quantify(sum);
+        else if (quantifier instanceof Absolute) {
+            return quantifier.quantify(sum);}
         else
             return quantifier.quantify(sum / newWeatherList.size());
     }

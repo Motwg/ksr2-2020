@@ -41,5 +41,10 @@ public class FlcReader {
         fis.getVariable("cloudiness").setUniverseMax(10);
         fis.getVariable("wind_velocity").setUniverseMin(0);
         fis.getVariable("wind_velocity").setUniverseMax(50);
+
+        fis.getVariable("percentage").setUniverseMin(0);
+        fis.getVariable("percentage").setUniverseMax(1);
+        fis.getVariable("absolute").setUniverseMin(0);
+        fis.getVariable("absolute").setUniverseMax(18000);
     }
 }
