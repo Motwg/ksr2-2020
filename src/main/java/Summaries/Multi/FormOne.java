@@ -3,14 +3,13 @@ package Summaries.Multi;
 import Summaries.Quantifiers.IQuantifier;
 import Summaries.Summarizer;
 import enumerate.Season;
-import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Builder
+
 public class FormOne implements MultiSubjectLinguisticSummary {
     Season season1;
     Season season2;
