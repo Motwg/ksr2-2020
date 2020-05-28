@@ -3,7 +3,7 @@ package utils;
 import java.util.Arrays;
 import java.util.List;
 
-public class Consts {
+public class Constants {
     public final static String INPUT_FCL_NAME = "weather.fcl";
     public final static String ABSOLUTE_VAR_NAME = "absolute";
     public final static String RELATIVE_VAR_NAME = "percentage";

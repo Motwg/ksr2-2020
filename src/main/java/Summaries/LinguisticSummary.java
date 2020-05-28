@@ -1,12 +1,10 @@
-package measures;
+package Summaries;
 
-import Quantificators.IQuantificator;
+import Summaries.Quantifiers.IQuantifier;
 import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
-import utils.Qualifier;
-import utils.Summarizer;
-import utils.TermAnaliser;
+import utils.TermAnalyser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,16 +12,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Builder
-public class Measures {
+public class LinguisticSummary {
 
     //cały set
     List<SimpleFuzzifyWeather> weatherList;
     Summarizer summarizer;
     // do quantifiera powinien trafić set z qualifiera, jesli natomiast brakuje qualifiera - caly set
-    IQuantificator quantificator;
+    IQuantifier quantificator;
     Qualifier qualifier;
     FIS fis;
-    TermAnaliser termAnaliser;
+    TermAnalyser termAnalyser;
 
     public double t1() {
         if(quantificator == null)
@@ -35,7 +33,7 @@ public class Measures {
     }
 
     public double t2() {
-        TermAnaliser analyser = new TermAnaliser(fis);
+        TermAnalyser analyser = new TermAnalyser(fis);
         double value = summarizer.getTerms().stream()
                 .mapToDouble(analyser::countIn)
                 .reduce(1, (a, b) -> a * b);
@@ -87,15 +85,15 @@ public class Measures {
     }
 
     public double t6() {
-        return 1 - termAnaliser.countIn(quantificator.getTerm());
+        return 1 - termAnalyser.countIn(quantificator.getTerm());
     }
 
     public double t7() {
-        return 1 - termAnaliser.countQSupp(quantificator.getTerm()) / termAnaliser.countX(quantificator.getTerm());
+        return 1 - termAnalyser.countQSupp(quantificator.getTerm()) / termAnalyser.countX(quantificator.getTerm());
     }
 
     public double t8() {
-        TermAnaliser analyser = new TermAnaliser(fis);
+        TermAnalyser analyser = new TermAnalyser(fis);
         double value = summarizer.getTerms().stream()
                 .mapToDouble(term -> analyser.countQSupp(term) / analyser.countX(term))
                 .reduce(1, (a, b) -> a * b);
@@ -103,12 +101,12 @@ public class Measures {
     }
 
     public double t9() {
-        TermAnaliser analyser = new TermAnaliser(fis);
+        TermAnalyser analyser = new TermAnalyser(fis);
         return 1 - analyser.countIn(qualifier.getLastTerm());
     }
 
     public double t10() {
-        TermAnaliser analyser = new TermAnaliser(fis);
+        TermAnalyser analyser = new TermAnalyser(fis);
         final String term = qualifier.getLastTerm();
         return 1 - analyser.countQSupp(term) / analyser.countX(term);
     }

@@ -1,15 +1,15 @@
-import Quantificators.Absolute;
-import Quantificators.Relative;
+import Summaries.Quantifiers.Absolute;
+import Summaries.Quantifiers.Relative;
 import enumerate.Operator;
-import measures.Measures;
+import Summaries.LinguisticSummary;
 import model.SimpleFuzzifyWeather;
 import model.Weather;
 import net.sourceforge.jFuzzyLogic.FIS;
 import Readers.DataReader;
 import Readers.FlcReader;
-import utils.Consts;
-import utils.Qualifier;
-import utils.Summarizer;
+import utils.Constants;
+import Summaries.Qualifier;
+import Summaries.Summarizer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +23,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         List<Weather> weatherData = DataReader.readWeatherFromCsv(FIRST_FILENAME);
         weatherData.addAll(DataReader.readWeatherFromCsv(SECOND_FILENAME));
-        FIS fis = FlcReader.load(Consts.INPUT_FCL_NAME);
+        FIS fis = FlcReader.load(Constants.INPUT_FCL_NAME);
 
         List<SimpleFuzzifyWeather> fWeatherData = weatherData.stream()
                 .map(w -> w.fuzzify(fis))
@@ -40,7 +40,7 @@ public class App {
 
         //Quantifier(X)             Qualifier(nocą)  Summarizer(bardzo zimno, ...)
         //w X pomiarów przeprowadzonych nocą było bardzo zimno //i ... lub ...
-        Measures measures = Measures.builder()
+        LinguisticSummary linguisticSummary = LinguisticSummary.builder()
                 .weatherList(fWeatherData) //zawsze cały set
                 .summarizer(summarizer)
                 .qualifier(qualifier)
@@ -48,17 +48,17 @@ public class App {
                 .fis(fis)
                 .build();
         System.out.println(absolute.t1());
-        System.out.println("t1: " + measures.t1());
-        System.out.println("t2: " + measures.t2());
-        System.out.println("t3: " + measures.t3());
-        System.out.println("t4: " + measures.t4());
-        System.out.println("t5: " + measures.t5());
-        System.out.println("t6: " + measures.t6());
-        System.out.println("t7: " + measures.t7());
-        System.out.println("t8: " + measures.t8());
-        System.out.println("t9: " + measures.t9());
-        System.out.println("t10: " + measures.t10());
-        System.out.println("t11: " + measures.t11());
+        System.out.println("t1: " + linguisticSummary.t1());
+        System.out.println("t2: " + linguisticSummary.t2());
+        System.out.println("t3: " + linguisticSummary.t3());
+        System.out.println("t4: " + linguisticSummary.t4());
+        System.out.println("t5: " + linguisticSummary.t5());
+        System.out.println("t6: " + linguisticSummary.t6());
+        System.out.println("t7: " + linguisticSummary.t7());
+        System.out.println("t8: " + linguisticSummary.t8());
+        System.out.println("t9: " + linguisticSummary.t9());
+        System.out.println("t10: " + linguisticSummary.t10());
+        System.out.println("t11: " + linguisticSummary.t11());
     }
 
 }

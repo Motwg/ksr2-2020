@@ -1,10 +1,11 @@
-package utils;
+package Summaries;
 
 import enumerate.Operator;
 import javafx.util.Pair;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import model.SimpleFuzzifyWeather;
+import utils.AndOr;
 
 import java.util.Arrays;
 import java.util.List;

@@ -5,15 +5,15 @@ import net.sourceforge.jFuzzyLogic.rule.Variable;
 
 import java.util.List;
 
-public class TermAnaliser {
+public class TermAnalyser {
     private FIS fis;
 
-    public TermAnaliser(FIS fis){
+    public TermAnalyser(FIS fis){
         this.fis = fis;
     }
 
     public double countSupp(String term) {
-        List<String> vars = Consts.ALL_VAR_NAMES;
+        List<String> vars = Constants.ALL_VAR_NAMES;
         for (String var: vars) {
             try {
                 if(var.contains("temperature"))
@@ -28,7 +28,7 @@ public class TermAnaliser {
     }
 
     public double countIn(String term) {
-        List<String> vars = Consts.ALL_VAR_NAMES;
+        List<String> vars = Constants.ALL_VAR_NAMES;
         Variable var;
         double dim;
         for (String varName: vars) {
@@ -48,7 +48,7 @@ public class TermAnaliser {
     }
 
     public double countX(String term) {
-        List<String> vars = Consts.ALL_VAR_NAMES;
+        List<String> vars = Constants.ALL_VAR_NAMES;
         Variable var;
         for (String varName: vars) {
             try {
@@ -63,7 +63,7 @@ public class TermAnaliser {
     }
 
     public double countQSupp(String term) {
-        List<String> vars = Consts.ALL_VAR_NAMES;
+        List<String> vars = Constants.ALL_VAR_NAMES;
         for (String var: vars) {
             try {
                 if(var.contains("temperature"))

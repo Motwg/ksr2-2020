@@ -7,11 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
-import utils.Consts;
+import utils.Constants;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,7 +58,7 @@ public class Weather {
         fis.setVariable("temperature_wet_" + getSeason().name().toLowerCase(), getTemperatureOfWetThermometer());
         fis.evaluate();
 
-        List<String> variables = Consts.WEATHER_VAR_NAMES;
+        List<String> variables = Constants.WEATHER_VAR_NAMES;
 
         SimpleFuzzifyWeather fWeather = new SimpleFuzzifyWeather();
         for (String varName : variables) {

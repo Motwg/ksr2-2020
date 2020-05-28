@@ -58,7 +58,8 @@ public class FunctionAnalyser {
                     mf.getParameter(2*m) - mf.getParameter(1*m)) / 2.0 +
                     (mf.getParameter(7*m) - mf.getParameter(4*m) +
                     mf.getParameter(6*m) - mf.getParameter(5*m)) / 2.0;
-            case "Gaussian": return 1;
+            case "Gaussian":
+            case "Sigma": return 1;
             default:
                 System.out.println("Not implemented in getQSupp: " + fName);
                 return 0;
