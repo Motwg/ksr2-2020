@@ -19,6 +19,7 @@ public class Summarizer {
 
     public Summarizer(String term) {
         this.terms = Arrays.asList(term);
+        this.operator = Operator.and;
     }
 
     public Pair<String, Double> summarize(SimpleFuzzifyWeather sfw) {

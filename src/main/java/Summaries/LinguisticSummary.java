@@ -1,6 +1,7 @@
 package Summaries;
 
 import Summaries.Quantifiers.IQuantifier;
+import Summaries.Quantifiers.Relative;
 import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
@@ -23,12 +24,20 @@ public class LinguisticSummary {
     FIS fis;
 
     public double t1() {
+        List<SimpleFuzzifyWeather> newWeatherList = weatherList;
+        if(qualifier != null)
+            newWeatherList = qualifier.qualify(weatherList);
+
+        double sum = newWeatherList.stream()
+                .mapToDouble(w -> summarizer.summarize(w).getValue())
+                .sum();
+
         if(quantifier == null)
-            return weatherList.stream()
-                    .mapToDouble(w -> summarizer.summarize(w).getValue())
-                    .sum();
+            return sum;
+        else if (quantifier instanceof Relative)
+            return quantifier.quantify(sum);
         else
-            return quantifier.t1();
+            return quantifier.quantify(sum / newWeatherList.size());
     }
 
     public double t2() {
@@ -40,28 +49,29 @@ public class LinguisticSummary {
     }
 
     public double t3() {
-        if(quantifier == null)
-            return weatherList.stream()
+        List<SimpleFuzzifyWeather> newWeatherList = weatherList;
+        if(qualifier != null)
+            newWeatherList = qualifier.qualify(weatherList);
+
+        return newWeatherList.stream()
                     .mapToDouble(w -> summarizer.summarize(w).getValue())
                     .filter(value -> value > 0)
                     .map(value -> 1)
-                    .sum() / weatherList.size();
-        else
-            return  quantifier.getWeatherList().stream()
-                    .mapToDouble(w -> summarizer.summarize(w).getValue())
-                    .filter(value -> value > 0)
-                    .map(value -> 1)
-                    .sum() / quantifier.getWeatherList().size();
+                    .sum() / newWeatherList.size();
     }
 
     public double t4() {
+        List<SimpleFuzzifyWeather> newWeatherList = weatherList;
+        if(qualifier != null)
+            newWeatherList = qualifier.qualify(weatherList);
+
         List<List<Integer>> ints;
         if(quantifier == null)
              ints = weatherList.stream()
                     .map(w -> summarizer.t4r(w))
                     .collect(Collectors.toList());
         else
-            ints = quantifier.getWeatherList().stream()
+            ints = newWeatherList.stream()
                     .map(w -> summarizer.t4r(w))
                     .collect(Collectors.toList());
 
@@ -71,7 +81,7 @@ public class LinguisticSummary {
             for (List<Integer> summators : ints) {
                 value += summators.get(i);
             }
-            rList.add(value / (double) quantifier.getWeatherList().size());
+            rList.add(value / (double) newWeatherList.size());
         }
         double value = 1;
         for(Double i : rList)
@@ -103,12 +113,12 @@ public class LinguisticSummary {
 
     public double t9() {
         TermAnalyser analyser = new TermAnalyser(fis);
-        return 1 - analyser.countIn(qualifier.getLastTerm());
+        return 1 - analyser.countIn(qualifier.getTerm());
     }
 
     public double t10() {
         TermAnalyser analyser = new TermAnalyser(fis);
-        final String term = qualifier.getLastTerm();
+        final String term = qualifier.getTerm();
         return 1 - analyser.countQSupp(term) / analyser.countX(term);
     }
 

@@ -19,7 +19,6 @@ public class FormFour implements MultiSubjectLinguisticSummary {
     FIS fis;
 
     public double t() {
-
         return 0;
     }
 
