@@ -1,4 +1,4 @@
-package Summaries;
+package summaries;
 
 import lombok.Getter;
 import model.SimpleFuzzifyWeather;

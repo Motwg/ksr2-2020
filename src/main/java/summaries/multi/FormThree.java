@@ -1,7 +1,8 @@
-package Summaries.Multi;
+package summaries.multi;
 
-import Summaries.Quantifiers.Relative;
-import Summaries.Summarizer;
+import summaries.Qualifier;
+import summaries.quantifiers.Relative;
+import summaries.Summarizer;
 import enumerate.Season;
 import lombok.AllArgsConstructor;
 import model.SimpleFuzzifyWeather;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class FormOne implements MultiSubjectLinguisticSummary {
+public class FormThree implements MultiSubjectLinguisticSummary {
     Season season1;
     Season season2;
 
@@ -19,22 +20,23 @@ public class FormOne implements MultiSubjectLinguisticSummary {
     List<SimpleFuzzifyWeather> weatherList;
     Summarizer summarizer;
     Relative quantifier;
+    Qualifier qualifier;
     FIS fis;
 
     public double t() {
         List<SimpleFuzzifyWeather> p1 = weatherList.stream()
                 .filter(weather -> weather.getSeason() == season1)
                 .collect(Collectors.toList());
-        List<SimpleFuzzifyWeather> p2 = weatherList.stream()
+        List<SimpleFuzzifyWeather> p2s2 = qualifier.qualify(weatherList).stream()
                 .filter(weather -> weather.getSeason() == season2)
                 .collect(Collectors.toList());
-        double sP1 = p1.stream()
+        double s1P1 = p1.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
                 .sum() / p1.size();
-        double sP2 = p2.stream()
+        double s1s2P2 = p2s2.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
-                .sum() / p2.size();
-        return quantifier.quantify(sP1 / (sP1 + sP2));
+                .sum() / p2s2.size();
+        return quantifier.quantify(s1s2P2 / (s1P1 + s1s2P2));
     }
 
 }

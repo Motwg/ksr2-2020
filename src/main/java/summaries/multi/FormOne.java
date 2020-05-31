@@ -1,6 +1,7 @@
-package Summaries.Multi;
+package summaries.multi;
 
-import Summaries.Summarizer;
+import summaries.quantifiers.Relative;
+import summaries.Summarizer;
 import enumerate.Season;
 import lombok.AllArgsConstructor;
 import model.SimpleFuzzifyWeather;
@@ -10,13 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class FormFour implements MultiSubjectLinguisticSummary {
+public class FormOne implements MultiSubjectLinguisticSummary {
     Season season1;
     Season season2;
 
     //cały set
     List<SimpleFuzzifyWeather> weatherList;
     Summarizer summarizer;
+    Relative quantifier;
     FIS fis;
 
     public double t() {
@@ -28,11 +30,11 @@ public class FormFour implements MultiSubjectLinguisticSummary {
                 .collect(Collectors.toList());
         double sP1 = p1.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
-                .sum();
+                .sum() / p1.size();
         double sP2 = p2.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
-                .sum();
-        return sP1 / (sP1 + sP2);
+                .sum() / p2.size();
+        return quantifier.quantify(sP1 / (sP1 + sP2));
     }
 
 }

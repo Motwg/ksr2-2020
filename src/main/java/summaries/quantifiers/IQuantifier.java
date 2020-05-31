@@ -1,4 +1,4 @@
-package Summaries.Quantifiers;
+package summaries.quantifiers;
 
 
 public interface IQuantifier {

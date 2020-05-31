@@ -1,7 +1,7 @@
-package Summaries;
+package summaries;
 
-import Summaries.Quantifiers.Absolute;
-import Summaries.Quantifiers.IQuantifier;
+import summaries.quantifiers.Absolute;
+import summaries.quantifiers.IQuantifier;
 import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;

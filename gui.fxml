@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="956.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
+  <tabs>
+    <Tab text="Jednopodmiotowe">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="242.0" layoutY="14.0" prefHeight="20.0" prefWidth="118.0" text="Parametry">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <VBox layoutX="22.0" layoutY="48.0" prefHeight="348.0" prefWidth="557.0">
+                     <children>
+                        <Separator prefWidth="200.0" />
+                        <VBox prefHeight="85.0" prefWidth="557.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="113.0" text="Kwantyfikator">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="100.0" prefWidth="305.0">
+                                 <children>
+                                    <VBox prefHeight="100.0" prefWidth="110.0">
+                                       <children>
+                                          <RadioButton fx:id="qRelative" mnemonicParsing="false" onAction="#changeQType" selected="true" text="Względny">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="quantifierGroup" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="qAbsolute" mnemonicParsing="false" onAction="#changeQType" text="Bezwględny" toggleGroup="$quantifierGroup" />
+                                       </children>
+                                    </VBox>
+                                    <HBox prefHeight="100.0" prefWidth="222.0">
+                                       <children>
+                                          <Label prefHeight="15.0" prefWidth="18.0" text="Q" />
+                                          <ComboBox fx:id="qComboBox" prefHeight="25.0" prefWidth="170.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator prefWidth="200.0" />
+                        <VBox prefHeight="71.0" prefWidth="557.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="90.0" text="Podmiot">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="56.0" prefWidth="557.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="35.0" text="P" />
+                                    <ComboBox fx:id="pComboBox" prefHeight="25.0" prefWidth="194.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator prefWidth="200.0" />
+                        <VBox prefHeight="74.0" prefWidth="557.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="90.0" text="Kwalifikator">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="100.0" prefWidth="222.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="34.0" text="K" />
+                                    <ComboBox fx:id="kComboBox" prefHeight="25.0" prefWidth="195.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator prefWidth="200.0" />
+                        <VBox prefHeight="71.0" prefWidth="635.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="94.0" text="Sumaryzator">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="46.0" prefWidth="226.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="32.0" text="S1" />
+                                    <ComboBox fx:id="s1ComboBox" prefHeight="25.0" prefWidth="169.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="222.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="32.0" text="S2">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ComboBox fx:id="s2ComboBox" prefHeight="25.0" prefWidth="169.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="222.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="31.0" text="S3" />
+                                    <ComboBox fx:id="s3ComboBox" prefHeight="25.0" prefWidth="169.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <Separator layoutX="594.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="546.0" prefWidth="7.0" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="727.0" layoutY="14.0" prefHeight="15.0" prefWidth="134.0" text="Obliczone miary">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <VBox layoutX="646.0" layoutY="48.0" prefHeight="375.0" prefWidth="266.0">
+                     <children>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T1" />
+                              <TextField fx:id="t1Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T2" />
+                              <TextField fx:id="t2Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T3" />
+                              <TextField fx:id="t3Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T4" />
+                              <TextField fx:id="t4Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T5" />
+                              <TextField fx:id="t5Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T6" />
+                              <TextField fx:id="t6Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T7" />
+                              <TextField fx:id="t7Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T8" />
+                              <TextField fx:id="t8Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T9" />
+                              <TextField fx:id="t9Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T10" />
+                              <TextField fx:id="t10Entry" editable="false" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="T11" />
+                              <TextField fx:id="t11Entry" editable="false" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Label alignment="CENTER" layoutX="131.0" layoutY="420.0" prefHeight="82.0" prefWidth="341.0" text="Q P będących K, jest/ma S_n" wrapText="true">
+                     <font>
+                        <Font name="Cabin-Regular" size="16.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="697.0" layoutY="432.0" mnemonicParsing="false" onAction="#generateSummary" prefHeight="58.0" prefWidth="194.0" text="Wygeneruj podsumowanie" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Wielopodmiotowe">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="242.0" layoutY="14.0" prefHeight="20.0" prefWidth="118.0" text="Parametry">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <VBox layoutX="22.0" layoutY="48.0" prefHeight="348.0" prefWidth="557.0">
+                     <children>
+                        <Separator prefWidth="200.0" />
+                        <VBox prefHeight="85.0" prefWidth="557.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="113.0" text="Kwantyfikator">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="100.0" prefWidth="305.0">
+                                 <children>
+                                    <VBox prefHeight="100.0" prefWidth="110.0">
+                                       <children>
+                                          <RadioButton fx:id="qMultiRelative" mnemonicParsing="false" onAction="#changeQMultiType" selected="true" text="Względny">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="quantifierMultiGroup" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                       </children>
+                                    </VBox>
+                                    <HBox prefHeight="100.0" prefWidth="222.0">
+                                       <children>
+                                          <Label prefHeight="15.0" prefWidth="18.0" text="Q" />
+                                          <ComboBox fx:id="qMultiComboBox" prefHeight="25.0" prefWidth="170.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator prefWidth="200.0" />
+                        <VBox prefHeight="71.0" prefWidth="557.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="90.0" text="Podmiot">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="38.0" prefWidth="243.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="35.0" text="P1" />
+                                    <ComboBox fx:id="p1MultiComboBox" prefHeight="25.0" prefWidth="192.0" />
+                                    <Label alignment="CENTER" prefHeight="15.0" prefWidth="35.0" text="P2" />
+                                    <ComboBox fx:id="p2MultiComboBox" prefHeight="25.0" prefWidth="192.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator prefWidth="200.0" />
+                        <VBox prefHeight="74.0" prefWidth="557.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="90.0" text="Kwalifikator">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="100.0" prefWidth="222.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="34.0" text="K" />
+                                    <ComboBox fx:id="kMultiComboBox" prefHeight="25.0" prefWidth="194.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator prefWidth="200.0" />
+                        <VBox prefHeight="71.0" prefWidth="635.0">
+                           <children>
+                              <Label prefHeight="15.0" prefWidth="94.0" text="Sumaryzator">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="46.0" prefWidth="226.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="32.0" text="S1" />
+                                    <ComboBox fx:id="s1MultiComboBox" prefHeight="25.0" prefWidth="169.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="222.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="32.0" text="S2">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ComboBox fx:id="s2MultiComboBox" prefHeight="25.0" prefWidth="169.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="222.0">
+                                 <children>
+                                    <Label prefHeight="15.0" prefWidth="31.0" text="S3" />
+                                    <ComboBox fx:id="s3MultiComboBox" prefHeight="25.0" prefWidth="169.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <Separator layoutX="594.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="546.0" prefWidth="7.0" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="727.0" layoutY="14.0" prefHeight="15.0" prefWidth="134.0" text="Obliczone miary">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <VBox layoutX="646.0" layoutY="195.0" prefHeight="228.0" prefWidth="266.0">
+                     <children>
+                        <HBox prefHeight="33.0" prefWidth="266.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="67.0" text="  T" />
+                              <TextField fx:id="tMultiEntry" editable="false" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Label alignment="CENTER" layoutX="131.0" layoutY="420.0" prefHeight="82.0" prefWidth="341.0" text="Q P1 w odniesieniu do P2 będących K jest S_n" wrapText="true">
+                     <font>
+                        <Font name="Cabin-Regular" size="16.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="697.0" layoutY="432.0" mnemonicParsing="false" onAction="#generateMultiSummary" prefHeight="58.0" prefWidth="194.0" text="Wygeneruj podsumowanie" />
+               </children>
+            </AnchorPane>
+         </content>
+    </Tab>
+  </tabs>
+</TabPane>

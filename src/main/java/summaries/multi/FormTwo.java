@@ -1,8 +1,8 @@
-package Summaries.Multi;
+package summaries.multi;
 
-import Summaries.Qualifier;
-import Summaries.Quantifiers.Relative;
-import Summaries.Summarizer;
+import summaries.Qualifier;
+import summaries.quantifiers.Relative;
+import summaries.Summarizer;
 import enumerate.Season;
 import lombok.AllArgsConstructor;
 import model.SimpleFuzzifyWeather;
