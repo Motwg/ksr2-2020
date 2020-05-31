@@ -61,7 +61,7 @@ public class App {
 
         FormOne ponadpolowawiosnawodniesieniudozimyjestchlodna =
                 new FormOne(Season.Spring, Season.Winter, fWeatherData, summarizer, relative, fis);
-        System.out.println(ponadpolowawiosnawodniesieniudozimyjestchlodna.t());
+        System.out.println(ponadpolowawiosnawodniesieniudozimyjestchlodna.t1());
     }
 
 }
