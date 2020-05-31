@@ -1,8 +1,8 @@
-package Summaries.Multi;
+package summaries;
 
-import Summaries.Summarizer;
-import enumerate.Season;
-import lombok.AllArgsConstructor;
+import summaries.quantifiers.Absolute;
+import summaries.quantifiers.IQuantifier;
+import lombok.Builder;
 import model.SimpleFuzzifyWeather;
 import net.sourceforge.jFuzzyLogic.FIS;
 import utils.TermAnalyser;
@@ -12,30 +12,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
-public class FormFour implements MultiSubjectLinguisticSummary {
-    Season season1;
-    Season season2;
+@Builder
+public class LinguisticSummary {
 
     //cały set
     List<SimpleFuzzifyWeather> weatherList;
     Summarizer summarizer;
+    // do quantifiera powinien trafić set z qualifiera, jesli natomiast brakuje qualifiera - caly set
+    IQuantifier quantifier;
+    Qualifier qualifier;
     FIS fis;
 
     public double t1() {
-        List<SimpleFuzzifyWeather> p1 = weatherList.stream()
-                .filter(weather -> weather.getSeason() == season1)
-                .collect(Collectors.toList());
-        List<SimpleFuzzifyWeather> p2 = weatherList.stream()
-                .filter(weather -> weather.getSeason() == season2)
-                .collect(Collectors.toList());
-        double sP1 = p1.stream()
+        List<SimpleFuzzifyWeather> newWeatherList = weatherList;
+        if(qualifier != null)
+            newWeatherList = qualifier.qualify(weatherList);
+
+        double sum = newWeatherList.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
                 .sum();
-        double sP2 = p2.stream()
-                .mapToDouble(w -> summarizer.summarize(w).getValue())
-                .sum();
-        return sP1 / (sP1 + sP2);
+        if(quantifier == null)
+            return sum;
+        else if (quantifier instanceof Absolute) {
+            return quantifier.quantify(sum);}
+        else
+            return quantifier.quantify(sum / newWeatherList.size());
     }
 
     public double t2() {
@@ -48,18 +49,28 @@ public class FormFour implements MultiSubjectLinguisticSummary {
 
     public double t3() {
         List<SimpleFuzzifyWeather> newWeatherList = weatherList;
+        if(qualifier != null)
+            newWeatherList = qualifier.qualify(weatherList);
 
         return newWeatherList.stream()
-                .mapToDouble(w -> summarizer.summarize(w).getValue())
-                .filter(value -> value > 0)
-                .map(value -> 1)
-                .sum() / newWeatherList.size();
+                    .mapToDouble(w -> summarizer.summarize(w).getValue())
+                    .filter(value -> value > 0)
+                    .map(value -> 1)
+                    .sum() / newWeatherList.size();
     }
 
     public double t4() {
         List<SimpleFuzzifyWeather> newWeatherList = weatherList;
+        if(qualifier != null)
+            newWeatherList = qualifier.qualify(weatherList);
 
-        List<List<Integer>> ints = newWeatherList.stream()
+        List<List<Integer>> ints;
+        if(quantifier == null)
+             ints = weatherList.stream()
+                    .map(w -> summarizer.t4r(w))
+                    .collect(Collectors.toList());
+        else
+            ints = newWeatherList.stream()
                     .map(w -> summarizer.t4r(w))
                     .collect(Collectors.toList());
 
@@ -81,6 +92,16 @@ public class FormFour implements MultiSubjectLinguisticSummary {
         return 2 * Math.pow(0.5, summarizer.getTerms().size());
     }
 
+    public double t6() {
+        TermAnalyser analyser = new TermAnalyser(fis);
+        return 1 - analyser.countIn(quantifier.getTerm());
+    }
+
+    public double t7() {
+        TermAnalyser analyser = new TermAnalyser(fis);
+        return 1 - analyser.countQSupp(quantifier.getTerm()) / analyser.countX(quantifier.getTerm());
+    }
+
     public double t8() {
         TermAnalyser analyser = new TermAnalyser(fis);
         double value = summarizer.getTerms().stream()
@@ -89,8 +110,24 @@ public class FormFour implements MultiSubjectLinguisticSummary {
         return 1 - Math.pow(value, 1.0 / summarizer.getTerms().size());
     }
 
+    public double t9() {
+        TermAnalyser analyser = new TermAnalyser(fis);
+        return 1 - analyser.countIn(qualifier.getTerm());
+    }
+
+    public double t10() {
+        TermAnalyser analyser = new TermAnalyser(fis);
+        final String term = qualifier.getTerm();
+        return 1 - analyser.countQSupp(term) / analyser.countX(term);
+    }
+
+    public double t11() {
+        // nasz kwalifikator zawsze składa się z jednego terma
+        return 1;
+    }
+
     public double overallT(List<Double> weights) {
-        if (weights.size() != 6) {
+        if (weights.size() != 11) {
             throw new RuntimeException("Nieprawidłowa ilość wag");
         } else if(0.99 > weights.stream().mapToDouble(a -> a).sum() ||
                 weights.stream().mapToDouble(a -> a).sum() > 1.01)
@@ -102,7 +139,12 @@ public class FormFour implements MultiSubjectLinguisticSummary {
                     t3() * weights.get(2),
                     t4() * weights.get(3),
                     t5() * weights.get(4),
-                    t8() * weights.get(7)
+                    t6() * weights.get(5),
+                    t7() * weights.get(6),
+                    t8() * weights.get(7),
+                    t9() * weights.get(8),
+                    t10() * weights.get(9),
+                    t11() * weights.get(10)
             );
             return values.stream().mapToDouble(a->a).max().orElse(0.0);
         }

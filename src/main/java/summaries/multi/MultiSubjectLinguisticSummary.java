@@ -1,4 +1,4 @@
-package Summaries.Multi;
+package summaries.multi;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package Readers;
+package readers;
 
 import net.sourceforge.jFuzzyLogic.FIS;
 

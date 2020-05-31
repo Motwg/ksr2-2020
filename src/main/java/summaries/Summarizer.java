@@ -1,4 +1,4 @@
-package Summaries;
+package summaries;
 
 import enumerate.Operator;
 import javafx.util.Pair;
