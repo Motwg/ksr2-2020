@@ -25,7 +25,9 @@ import utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -176,6 +178,7 @@ public class Controller {
         }
         if (isMulti) {
             qMultiComboBox.getItems().removeAll(qMultiComboBox.getItems());
+            qMultiComboBox.getItems().add("");
             options.forEach(o -> qMultiComboBox.getItems().add(o));
         } else {
             qComboBox.getItems().removeAll(qComboBox.getItems());
@@ -187,6 +190,7 @@ public class Controller {
         pComboBox.getItems().removeAll(pComboBox.getItems());
         //pComboBox.getItems().add("Weather measurements");
         List<String> options = Arrays.stream(Season.values()).map(Season::toString).collect(Collectors.toList());
+        pComboBox.getItems().add("");
         options.forEach(o -> pComboBox.getItems().add(o));
     }
 
@@ -202,32 +206,35 @@ public class Controller {
 
     private void setKComboBox() {
         kComboBox.getItems().removeAll(kComboBox.getItems());
-        List<String> options = new ArrayList<>(fis.getVariable("day_time").getLinguisticTerms().keySet());
+        Set<String> options = getAllTerms();
         options.forEach(o -> kComboBox.getItems().add(o));
     }
 
     private void setKMultiComboBox() {
         kMultiComboBox.getItems().removeAll(kMultiComboBox.getItems());
-        List<String> options = new ArrayList<>(fis.getVariable("day_time").getLinguisticTerms().keySet());
+        Set<String> options = getAllTerms();
         options.forEach(o -> kMultiComboBox.getItems().add(o));
+    }
+
+    private Set<String> getAllTerms() {
+        Set<String> allTerms = new HashSet<>();
+        Constants.WEATHER_VAR_NAMES.forEach(s -> {
+            String term = s;
+            if (s.contains("temperature")) {
+                term += "_winter";
+            }
+            allTerms.addAll(fis.getVariable(term).getLinguisticTerms().keySet());});
+        return allTerms;
     }
 
     private void setS1AndS2AndS3ComboBox() {
         s1ComboBox.getItems().removeAll(s1ComboBox.getItems());
         s2ComboBox.getItems().removeAll(s2ComboBox.getItems());
         s3ComboBox.getItems().removeAll(s3ComboBox.getItems());
-
-        List<String> options = new ArrayList<>();
-        options.addAll(fis.getVariable("cloudiness").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("dampness").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("wind_velocity").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("precipitation_six").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("snow").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("pressure_station").getLinguisticTerms().keySet());
-        //options.addAll(fis.getVariable("pressure_sea").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("temperature_winter").getLinguisticTerms().keySet());
-        //options.addAll(fis.getVariable("temperature_wet_winter").getLinguisticTerms().keySet());
-
+        Set<String> options = getAllTerms();
+        s1ComboBox.getItems().add("");
+        s2ComboBox.getItems().add("");
+        s3ComboBox.getItems().add("");
         options.forEach(o -> {
             s1ComboBox.getItems().add(o);
             s2ComboBox.getItems().add(o);
@@ -239,18 +246,10 @@ public class Controller {
         s1MultiComboBox.getItems().removeAll(s1MultiComboBox.getItems());
         s2MultiComboBox.getItems().removeAll(s2MultiComboBox.getItems());
         s3MultiComboBox.getItems().removeAll(s3MultiComboBox.getItems());
-
-        List<String> options = new ArrayList<>();
-        options.addAll(fis.getVariable("cloudiness").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("dampness").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("wind_velocity").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("precipitation_six").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("snow").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("pressure_station").getLinguisticTerms().keySet());
-        //options.addAll(fis.getVariable("pressure_sea").getLinguisticTerms().keySet());
-        options.addAll(fis.getVariable("temperature_winter").getLinguisticTerms().keySet());
-        //options.addAll(fis.getVariable("temperature_wet_winter").getLinguisticTerms().keySet());
-
+        Set<String> options = getAllTerms();
+        s1MultiComboBox.getItems().add("");
+        s2MultiComboBox.getItems().add("");
+        s3MultiComboBox.getItems().add(" ");
         options.forEach(o -> {
             s1MultiComboBox.getItems().add(o);
             s2MultiComboBox.getItems().add(o);
@@ -268,16 +267,16 @@ public class Controller {
 
     @FXML
     public void generateSummary() {
-        if (qComboBox.getSelectionModel().isEmpty() || pComboBox.getSelectionModel().isEmpty()
-                || kComboBox.getSelectionModel().isEmpty() || s1ComboBox.getSelectionModel().isEmpty()) {
+        if (qComboBox.getSelectionModel().isEmpty() || kComboBox.getSelectionModel().isEmpty()
+                || s1ComboBox.getSelectionModel().isEmpty() || s1ComboBox.getSelectionModel().getSelectedItem().equals("")) {
             drawAlertWindow();
         } else {
             List<String> summarizerList = new ArrayList<>();
             summarizerList.add(s1ComboBox.getSelectionModel().getSelectedItem().toString());
-            if (!s2ComboBox.getSelectionModel().isEmpty()) {
+            if (!s2ComboBox.getSelectionModel().isEmpty() && !s2ComboBox.getSelectionModel().getSelectedItem().equals("")) {
                 summarizerList.add(s2ComboBox.getSelectionModel().getSelectedItem().toString());
             }
-            if (!s3ComboBox.getSelectionModel().isEmpty()) {
+            if (!s3ComboBox.getSelectionModel().isEmpty()  && !s3ComboBox.getSelectionModel().getSelectedItem().equals("")) {
                 summarizerList.add(s3ComboBox.getSelectionModel().getSelectedItem().toString());
             }
             Summarizer summarizer = new Summarizer(summarizerList, Operator.and);
@@ -312,15 +311,15 @@ public class Controller {
     @FXML
     public void generateMultiSummary() {
         if (p1MultiComboBox.getSelectionModel().isEmpty() || p2MultiComboBox.getSelectionModel().isEmpty()
-                || s1MultiComboBox.getSelectionModel().isEmpty()) {
+                || s1MultiComboBox.getSelectionModel().isEmpty() || s1MultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
             drawAlertWindow();
         } else {
             List<String> summarizerList = new ArrayList<>();
             summarizerList.add(s1MultiComboBox.getSelectionModel().getSelectedItem().toString());
-            if (!s2MultiComboBox.getSelectionModel().isEmpty()) {
+            if (!s2MultiComboBox.getSelectionModel().isEmpty() && !s2MultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
                 summarizerList.add(s2MultiComboBox.getSelectionModel().getSelectedItem().toString());
             }
-            if (!s3MultiComboBox.getSelectionModel().isEmpty()) {
+            if (!s3MultiComboBox.getSelectionModel().isEmpty() && !s3MultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
                 summarizerList.add(s3MultiComboBox.getSelectionModel().getSelectedItem().toString());
             }
             Summarizer summarizer = new Summarizer(summarizerList, Operator.and);
@@ -331,7 +330,7 @@ public class Controller {
             }
 
             Relative quantifier = null;
-            if (!qMultiComboBox.getSelectionModel().isEmpty()) {
+            if (!qMultiComboBox.getSelectionModel().isEmpty() && !qMultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
                 String quantifierTerm = qMultiComboBox.getSelectionModel().getSelectedItem().toString();
                 quantifier = new Relative(fis, quantifierTerm);
             }
