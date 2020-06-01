@@ -5,11 +5,7 @@ import enumerate.Season;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import model.SimpleFuzzifyWeather;
 import model.Weather;
 import net.sourceforge.jFuzzyLogic.FIS;
@@ -370,6 +366,6 @@ public class Controller {
     }
 
     private void setMultiT(MultiSubjectLinguisticSummary multiSubjectLinguisticSummary) {
-        tMultiEntry.setText(String.valueOf(multiSubjectLinguisticSummary.t()));
+        tMultiEntry.setText(String.valueOf(multiSubjectLinguisticSummary.t1()));
     }
 }
