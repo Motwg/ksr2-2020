@@ -351,7 +351,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Label alignment="CENTER" layoutX="51.0" layoutY="420.0" prefHeight="82.0" prefWidth="507.0" text="1. Q P1 w odniesieniu do P2 jest S_n&#10;2. Q P1 w odniesieniu do P2 będących K jest S_n&#10;3. Q P1 będących K w odniesieniu do P2 jest S_n&#10;4. Więcej P1 niż P2 jest S_n&#10;" wrapText="true">
+                  <Label alignment="CENTER" layoutX="51.0" layoutY="404.0" prefHeight="138.0" prefWidth="502.0" text="1. Q P1 w odniesieniu do P2 jest S_n&#10;2. Q P1 w odniesieniu do P2 będących K jest S_n&#10;3. Q P1 będących K w odniesieniu do P2 jest S_n&#10;4. Więcej P1 niż P2 jest S_n&#10;" wrapText="true">
                      <font>
                         <Font name="Cabin-Regular" size="16.0" />
                      </font>
