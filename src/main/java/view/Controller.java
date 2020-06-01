@@ -16,6 +16,7 @@ import summaries.Qualifier;
 import summaries.Summarizer;
 import summaries.multi.FormFour;
 import summaries.multi.FormOne;
+import summaries.multi.FormThree;
 import summaries.multi.FormTwo;
 import summaries.multi.MultiSubjectLinguisticSummary;
 import summaries.quantifiers.Absolute;
@@ -120,6 +121,9 @@ public class Controller {
 
     @FXML
     TextField tMultiEntry;
+
+    @FXML
+    ToggleGroup qualifierTypeGroup;
 
     @FXML
     public void initialize() {
@@ -340,14 +344,14 @@ public class Controller {
             MultiSubjectLinguisticSummary multiSubjectLinguisticSummary;
             Season season1 = Season.valueOf(p1MultiComboBox.getSelectionModel().getSelectedItem().toString());
             Season season2 = Season.valueOf(p2MultiComboBox.getSelectionModel().getSelectedItem().toString());
-            if (qualifier == null) {
-                if (quantifier == null) {
+            if (qualifier == null && quantifier == null) {
                     multiSubjectLinguisticSummary = new FormFour(season1, season2, fWeatherData, summarizer, fis);
-                } else {
+            } else if (qualifier == null) {
                     multiSubjectLinguisticSummary = new FormOne(season1, season2, fWeatherData, summarizer, quantifier, fis);
-                }
-            } else {
+            } else if (((RadioButton) qualifierTypeGroup.getSelectedToggle()).getId().equals("secondForm")){
                 multiSubjectLinguisticSummary = new FormTwo(season1, season2, fWeatherData, summarizer, quantifier, qualifier, fis);
+            } else {
+                multiSubjectLinguisticSummary = new FormThree(season1, season2, fWeatherData, summarizer, quantifier, qualifier, fis);
             }
             setMultiT(multiSubjectLinguisticSummary);
         }
