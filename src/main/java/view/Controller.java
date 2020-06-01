@@ -207,12 +207,14 @@ public class Controller {
     private void setKComboBox() {
         kComboBox.getItems().removeAll(kComboBox.getItems());
         Set<String> options = getAllTerms();
+        kComboBox.getItems().add("");
         options.forEach(o -> kComboBox.getItems().add(o));
     }
 
     private void setKMultiComboBox() {
         kMultiComboBox.getItems().removeAll(kMultiComboBox.getItems());
         Set<String> options = getAllTerms();
+        kMultiComboBox.getItems().add("");
         options.forEach(o -> kMultiComboBox.getItems().add(o));
     }
 
@@ -267,7 +269,7 @@ public class Controller {
 
     @FXML
     public void generateSummary() {
-        if (qComboBox.getSelectionModel().isEmpty() || kComboBox.getSelectionModel().isEmpty()
+        if (qComboBox.getSelectionModel().isEmpty()
                 || s1ComboBox.getSelectionModel().isEmpty() || s1ComboBox.getSelectionModel().getSelectedItem().equals("")) {
             drawAlertWindow();
         } else {
@@ -280,9 +282,10 @@ public class Controller {
                 summarizerList.add(s3ComboBox.getSelectionModel().getSelectedItem().toString());
             }
             Summarizer summarizer = new Summarizer(summarizerList, Operator.and);
-
-            Qualifier qualifier = new Qualifier(kComboBox.getSelectionModel().getSelectedItem().toString());
-
+            Qualifier qualifier = null;
+            if (!kComboBox.getSelectionModel().isEmpty() && !kComboBox.getSelectionModel().getSelectedItem().equals("")) {
+                qualifier = new Qualifier(kComboBox.getSelectionModel().getSelectedItem().toString());
+            }
             IQuantifier quantifier;
             String quantifierTerm = qComboBox.getSelectionModel().getSelectedItem().toString();
             switch (((RadioButton)quantifierGroup.getSelectedToggle()).getId()) {
@@ -325,7 +328,7 @@ public class Controller {
             Summarizer summarizer = new Summarizer(summarizerList, Operator.and);
 
             Qualifier qualifier = null;
-            if (!kMultiComboBox.getSelectionModel().isEmpty()) {
+            if (!kMultiComboBox.getSelectionModel().isEmpty() && !kMultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
                 qualifier = new Qualifier(kMultiComboBox.getSelectionModel().getSelectedItem().toString());
             }
 
@@ -359,9 +362,16 @@ public class Controller {
         t6Entry.setText(String.valueOf(linguisticSummary.t6()));
         t7Entry.setText(String.valueOf(linguisticSummary.t7()));
         t8Entry.setText(String.valueOf(linguisticSummary.t8()));
-        t9Entry.setText(String.valueOf(linguisticSummary.t9()));
-        t10Entry.setText(String.valueOf(linguisticSummary.t10()));
-        t11Entry.setText(String.valueOf(linguisticSummary.t11()));
+        if (linguisticSummary.getQualifier() != null) {
+            t9Entry.setText(String.valueOf(linguisticSummary.t9()));
+            t10Entry.setText(String.valueOf(linguisticSummary.t10()));
+            t11Entry.setText(String.valueOf(linguisticSummary.t11()));
+        } else {
+            String empty = "Brak";
+            t9Entry.setText(empty);
+            t10Entry.setText(empty);
+            t11Entry.setText(empty);
+        }
     }
 
     private void setMultiT(MultiSubjectLinguisticSummary multiSubjectLinguisticSummary) {

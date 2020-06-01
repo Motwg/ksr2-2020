@@ -1,5 +1,6 @@
 package summaries;
 
+import lombok.Getter;
 import summaries.quantifiers.Absolute;
 import summaries.quantifiers.IQuantifier;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class LinguisticSummary {
     Summarizer summarizer;
     // do quantifiera powinien trafić set z qualifiera, jesli natomiast brakuje qualifiera - caly set
     IQuantifier quantifier;
+    @Getter
     Qualifier qualifier;
     FIS fis;
 
