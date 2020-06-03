@@ -37,7 +37,7 @@ public class Summarizer {
         }
     }
 
-    public List<Integer> t4r(SimpleFuzzifyWeather sfw) {
+    public List<Integer> t4g(SimpleFuzzifyWeather sfw) {
         return terms.stream()
                 .map(term -> sfw.getTerm(term).getValue())
                 .map(value -> {

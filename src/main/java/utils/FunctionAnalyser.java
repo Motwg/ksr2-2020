@@ -30,16 +30,15 @@ public class FunctionAnalyser {
             case "8": return mf.getParameter(3*m) - mf.getParameter(0*m) +
                             mf.getParameter(7*m) - mf.getParameter(4*m);
             case "Gaussian":
-                return mf.getParameter(0) * 2;
+                return mf.getParameter(1) * 6;
             case "Sigma":
-                return Math.abs(mf.getParameter(0));
             default:
                 System.out.println("Not implemented in getSupp: " + fName);
                 return 0;
         }
     }
     // pole
-    public static double getQSupp(MembershipFunction mf) {
+    public static double getClm(MembershipFunction mf) {
         String fName;
         int m = 2;
         if(mf.getName().compareTo("PieceWiseLinear") == 0)
@@ -58,10 +57,10 @@ public class FunctionAnalyser {
                     mf.getParameter(2*m) - mf.getParameter(1*m)) / 2.0 +
                     (mf.getParameter(7*m) - mf.getParameter(4*m) +
                     mf.getParameter(6*m) - mf.getParameter(5*m)) / 2.0;
-            case "Gaussian":
-            case "Sigma": return 1;
+            case "Gaussian": return mf.getParameter(1);
+            case "Sigma":
             default:
-                System.out.println("Not implemented in getQSupp: " + fName);
+                System.out.println("Not implemented in getClm: " + fName);
                 return 0;
         }
     }

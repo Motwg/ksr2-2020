@@ -9,10 +9,10 @@ public class Constants {
     public final static String RELATIVE_VAR_NAME = "percentage";
     public final static List<String> WEATHER_VAR_NAMES = Arrays.asList(
             "day_time", "cloudiness", "dampness", "wind_velocity",
-            "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
+            "precipitation_six", "snow", "pressure_station", "pressure_sea",
             "temperature", "temperature_wet");
     public final static List<String> ALL_VAR_NAMES = Arrays.asList(
             "day_time", "cloudiness", "dampness", "wind_velocity",
-            "precipitation_six", "snow", "pressure_station", "pressure_sea", "weather",
+            "precipitation_six", "snow", "pressure_station", "pressure_sea",
             "temperature", "temperature_wet", "absolute", "percentage");
 }

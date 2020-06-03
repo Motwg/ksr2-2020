@@ -8,7 +8,6 @@ import summaries.Summarizer;
 import summaries.quantifiers.Relative;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class FormOne implements MultiSubjectLinguisticSummary {
@@ -22,12 +21,9 @@ public class FormOne implements MultiSubjectLinguisticSummary {
     FIS fis;
 
     public double t1() {
-        List<SimpleFuzzifyWeather> p1 = weatherList.stream()
-                .filter(weather -> weather.getSeason() == season1)
-                .collect(Collectors.toList());
-        List<SimpleFuzzifyWeather> p2 = weatherList.stream()
-                .filter(weather -> weather.getSeason() == season2)
-                .collect(Collectors.toList());
+        List<SimpleFuzzifyWeather> p1 = MultiSubjectLinguisticSummary.filterList(weatherList, season1);
+        List<SimpleFuzzifyWeather> p2 = MultiSubjectLinguisticSummary.filterList(weatherList, season2);
+
         double sP1 = p1.stream()
                 .mapToDouble(w -> summarizer.summarize(w).getValue())
                 .sum() / p1.size();

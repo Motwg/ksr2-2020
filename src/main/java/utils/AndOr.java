@@ -19,6 +19,10 @@ public class AndOr {
         return term;
     }
 
+    public static double and(double v1, double v2) {
+        return v1 < v2 ? v1 : v2;
+    }
+
     public static Pair<String, Double> or(Pair<String, Double> first, Pair<String, Double> second) {
         return new Pair<>(
                 first.getKey() + " or " + second.getKey(),

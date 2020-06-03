@@ -40,7 +40,9 @@ public class TermAnalyser {
                 dim = var.getUniverseMax() - var.getUniverseMin();
                 double value = FunctionAnalyser.getSupp(var.getMembershipFunction(term)) / dim;
                 if (Double.isNaN(value))
-                    System.out.println("var: " + varName + "  value: " + value);
+                    System.out.println("var: " + varName + "  value: " + value + "\n" +
+                            "supp: " + FunctionAnalyser.getSupp(var.getMembershipFunction(term)) + "\n" +
+                            "X: " + dim);
                 return value;
             } catch (Exception e) {}
         }
@@ -63,16 +65,16 @@ public class TermAnalyser {
         return 0;
     }
 
-    public double countQSupp(String term) {
+    public double countClm(String term) {
         List<String> vars = Constants.ALL_VAR_NAMES;
         for (String var: vars) {
             try {
                 if(var.contains("temperature"))
-                    return FunctionAnalyser.getQSupp(
+                    return FunctionAnalyser.getClm(
                             fis.getVariable(var + "_spring").getMembershipFunction(term)
-                    );
+                    ) / countX(term);
                 else
-                    return FunctionAnalyser.getQSupp(fis.getVariable(var).getMembershipFunction(term));
+                    return FunctionAnalyser.getClm(fis.getVariable(var).getMembershipFunction(term)) / countX(term);
             } catch (Exception e) {}
         }
         return 0;

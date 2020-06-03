@@ -2,6 +2,7 @@ package view;
 
 import enumerate.Operator;
 import enumerate.Season;
+import exception.QuantifierException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,21 +15,13 @@ import readers.FlcReader;
 import summaries.LinguisticSummary;
 import summaries.Qualifier;
 import summaries.Summarizer;
-import summaries.multi.FormFour;
-import summaries.multi.FormOne;
-import summaries.multi.FormThree;
-import summaries.multi.FormTwo;
-import summaries.multi.MultiSubjectLinguisticSummary;
+import summaries.multi.*;
 import summaries.quantifiers.Absolute;
 import summaries.quantifiers.IQuantifier;
 import summaries.quantifiers.Relative;
 import utils.Constants;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -267,12 +260,21 @@ public class Controller {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Błąd");
         alert.setHeaderText("Niepełna konfiguracja");
-        alert.setContentText("Nie uzupełniono wszystkich wymaganych pól!!!");
+        alert.setContentText("Nie uzupełniono wszystkich wymaganych pól!");
+        alert.showAndWait();
+    }
+
+    private void drawAlertWindow(Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Błąd");
+        alert.setHeaderText("Niepoprawna konfiguracja");
+        alert.setContentText(e.getMessage());
         alert.showAndWait();
     }
 
     @FXML
     public void generateSummary() {
+
         if (qComboBox.getSelectionModel().isEmpty()
                 || s1ComboBox.getSelectionModel().isEmpty() || s1ComboBox.getSelectionModel().getSelectedItem().equals("")) {
             drawAlertWindow();
@@ -282,7 +284,7 @@ public class Controller {
             if (!s2ComboBox.getSelectionModel().isEmpty() && !s2ComboBox.getSelectionModel().getSelectedItem().equals("")) {
                 summarizerList.add(s2ComboBox.getSelectionModel().getSelectedItem().toString());
             }
-            if (!s3ComboBox.getSelectionModel().isEmpty()  && !s3ComboBox.getSelectionModel().getSelectedItem().equals("")) {
+            if (!s3ComboBox.getSelectionModel().isEmpty() && !s3ComboBox.getSelectionModel().getSelectedItem().equals("")) {
                 summarizerList.add(s3ComboBox.getSelectionModel().getSelectedItem().toString());
             }
             Summarizer summarizer = new Summarizer(summarizerList, Operator.and);
@@ -292,7 +294,7 @@ public class Controller {
             }
             IQuantifier quantifier;
             String quantifierTerm = qComboBox.getSelectionModel().getSelectedItem().toString();
-            switch (((RadioButton)quantifierGroup.getSelectedToggle()).getId()) {
+            switch (((RadioButton) quantifierGroup.getSelectedToggle()).getId()) {
                 case ("qRelative"):
                     quantifier = new Relative(fis, quantifierTerm);
                     break;
@@ -301,10 +303,19 @@ public class Controller {
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + ((RadioButton) quantifierGroup.getSelectedToggle()).getId());
-            };
+            }
+
+            List<SimpleFuzzifyWeather> filteredFWeatherData = fWeatherData;
+            if (!pComboBox.getSelectionModel().isEmpty() && !pComboBox.getSelectionModel().getSelectedItem().equals("")) {
+                filteredFWeatherData = fWeatherData.parallelStream()
+                        .filter(weather -> weather.getSeason().compareTo(
+                                Season.valueOf(pComboBox.getSelectionModel().getSelectedItem().toString())
+                        ) == 0)
+                        .collect(Collectors.toList());
+            }
 
             LinguisticSummary linguisticSummary = LinguisticSummary.builder()
-                    .weatherList(fWeatherData)
+                    .weatherList(filteredFWeatherData)
                     .summarizer(summarizer)
                     .qualifier(qualifier)
                     .quantifier(quantifier)
@@ -345,9 +356,9 @@ public class Controller {
             Season season1 = Season.valueOf(p1MultiComboBox.getSelectionModel().getSelectedItem().toString());
             Season season2 = Season.valueOf(p2MultiComboBox.getSelectionModel().getSelectedItem().toString());
             if (qualifier == null && quantifier == null) {
-                    multiSubjectLinguisticSummary = new FormFour(season1, season2, fWeatherData, summarizer, fis);
+                multiSubjectLinguisticSummary = new FormFour(season1, season2, fWeatherData, summarizer, fis);
             } else if (qualifier == null) {
-                    multiSubjectLinguisticSummary = new FormOne(season1, season2, fWeatherData, summarizer, quantifier, fis);
+                multiSubjectLinguisticSummary = new FormOne(season1, season2, fWeatherData, summarizer, quantifier, fis);
             } else if (((RadioButton) qualifierTypeGroup.getSelectedToggle()).getId().equals("secondForm")){
                 multiSubjectLinguisticSummary = new FormTwo(season1, season2, fWeatherData, summarizer, quantifier, qualifier, fis);
             } else {
@@ -358,23 +369,27 @@ public class Controller {
     }
 
     private void setFromT1ToT11(LinguisticSummary linguisticSummary) {
-        t1Entry.setText(String.valueOf(linguisticSummary.t1()));
-        t2Entry.setText(String.valueOf(linguisticSummary.t2()));
-        t3Entry.setText(String.valueOf(linguisticSummary.t3()));
-        t4Entry.setText(String.valueOf(linguisticSummary.t4()));
-        t5Entry.setText(String.valueOf(linguisticSummary.t5()));
-        t6Entry.setText(String.valueOf(linguisticSummary.t6()));
-        t7Entry.setText(String.valueOf(linguisticSummary.t7()));
-        t8Entry.setText(String.valueOf(linguisticSummary.t8()));
-        if (linguisticSummary.getQualifier() != null) {
-            t9Entry.setText(String.valueOf(linguisticSummary.t9()));
-            t10Entry.setText(String.valueOf(linguisticSummary.t10()));
-            t11Entry.setText(String.valueOf(linguisticSummary.t11()));
-        } else {
-            String empty = "Brak";
-            t9Entry.setText(empty);
-            t10Entry.setText(empty);
-            t11Entry.setText(empty);
+        try {
+            t1Entry.setText(String.valueOf(linguisticSummary.t1()));
+            t2Entry.setText(String.valueOf(linguisticSummary.t2()));
+            t3Entry.setText(String.valueOf(linguisticSummary.t3()));
+            t4Entry.setText(String.valueOf(linguisticSummary.t4()));
+            t5Entry.setText(String.valueOf(linguisticSummary.t5()));
+            t6Entry.setText(String.valueOf(linguisticSummary.t6()));
+            t7Entry.setText(String.valueOf(linguisticSummary.t7()));
+            t8Entry.setText(String.valueOf(linguisticSummary.t8()));
+            if (linguisticSummary.getQualifier() != null) {
+                t9Entry.setText(String.valueOf(linguisticSummary.t9()));
+                t10Entry.setText(String.valueOf(linguisticSummary.t10()));
+                t11Entry.setText(String.valueOf(linguisticSummary.t11()));
+            } else {
+                String empty = "Brak";
+                t9Entry.setText(empty);
+                t10Entry.setText(empty);
+                t11Entry.setText(empty);
+            }
+        } catch (QuantifierException e) {
+            drawAlertWindow(e);
         }
     }
 

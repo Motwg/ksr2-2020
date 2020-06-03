@@ -1,6 +1,7 @@
 package model;
 
 import enumerate.Season;
+import exception.FuzzifyException;
 import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,9 +22,13 @@ public class SimpleFuzzifyWeather {
     }
 
     public Pair<String, Double> getTerm(String term) {
-        return weather.stream()
-                .filter(t -> t.getKey().compareTo(term) == 0)
-                .findAny()
-                .orElse(new Pair<>(term, 0.0));
+        try {
+            return weather.stream()
+                    .filter(t -> t.getKey().compareTo(term) == 0)
+                    .findAny()
+                    .orElseThrow(() -> new FuzzifyException("Term " + term + " does not exist, creating new one"));
+        } catch (FuzzifyException e) {
+            return new Pair<>(term, 0.0);
+        }
     }
 }

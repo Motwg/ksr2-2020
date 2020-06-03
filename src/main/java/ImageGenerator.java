@@ -1,30 +1,22 @@
-package readers;
-
+import model.Weather;
 import net.sourceforge.jFuzzyLogic.FIS;
+import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
+import readers.DataReader;
+import readers.FlcReader;
+import utils.Constants;
 
-import java.io.File;
+import java.util.List;
 
-public class FlcReader {
-    public static FIS load(String filename) {
-        // Load from 'FCL' file
-        try {
-            String fileName = "data" + File.separator + filename;
-            FIS fis = FIS.load(fileName,true);
+public class ImageGenerator {
 
-            if( fis == null ) {
-                System.err.println("Can't load file: '"
-                        + fileName + "'");
-                throw new Exception();
-            }
-            init(fis);
-            return fis;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    private static final String FIRST_FILENAME = "2016.csv";
+    private static final String SECOND_FILENAME = "2017.csv";
 
-    public static void init(FIS fis) {
+    public static void main(String[] args) throws Exception {
+        List<Weather> weatherData = DataReader.readWeatherFromCsv(FIRST_FILENAME);
+        weatherData.addAll(DataReader.readWeatherFromCsv(SECOND_FILENAME));
+        FIS fis = FlcReader.load(Constants.INPUT_FCL_NAME);
+
         fis.getVariable("dampness").setUniverseMax(100);
         fis.getVariable("dampness").setUniverseMin(0);
         fis.getVariable("day_time").setUniverseMin(0);
@@ -38,17 +30,19 @@ public class FlcReader {
         fis.getVariable("wind_velocity").setUniverseMin(0);
         fis.getVariable("wind_velocity").setUniverseMax(50);
         fis.getVariable("precipitation_six").setUniverseMin(0);
-        fis.getVariable("precipitation_six").setUniverseMax(40);
+        fis.getVariable("precipitation_six").setUniverseMax(8);
         fis.getVariable("pressure_station").setUniverseMin(799);
         fis.getVariable("pressure_station").setUniverseMax(870);
-        fis.getVariable("pressure_sea").setUniverseMin(950);
+        fis.getVariable("pressure_sea").setUniverseMin(980);
         fis.getVariable("pressure_sea").setUniverseMax(1050);
         fis.getVariable("snow").setUniverseMin(0);
-        fis.getVariable("snow").setUniverseMax(60);
+        fis.getVariable("snow").setUniverseMax(15);
 
         fis.getVariable("percentage").setUniverseMin(0);
         fis.getVariable("percentage").setUniverseMax(1);
         fis.getVariable("absolute").setUniverseMin(0);
         fis.getVariable("absolute").setUniverseMax(17544);
+
+        JFuzzyChart.get().chart(fis);
     }
 }
