@@ -288,19 +288,6 @@
                                  <children>
                                     <Label prefHeight="15.0" prefWidth="34.0" text="K" />
                                     <ComboBox fx:id="kMultiComboBox" prefHeight="25.0" prefWidth="194.0" />
-                                    <VBox prefHeight="53.0" prefWidth="176.0">
-                                       <children>
-                                          <RadioButton fx:id="secondForm" mnemonicParsing="false" selected="true" text="Druga forma">
-                                             <toggleGroup>
-                                                <ToggleGroup fx:id="qualifierTypeGroup" />
-                                             </toggleGroup>
-                                          </RadioButton>
-                                          <RadioButton fx:id="thirdForm" mnemonicParsing="false" text="Trzecia forma" toggleGroup="$qualifierTypeGroup" />
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets left="30.0" />
-                                       </HBox.margin>
-                                    </VBox>
                                  </children>
                               </HBox>
                            </children>
@@ -364,12 +351,19 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Label alignment="CENTER" layoutX="51.0" layoutY="404.0" prefHeight="138.0" prefWidth="502.0" text="1. Q P1 w odniesieniu do P2 jest S_n&#10;2. Q P1 w odniesieniu do P2 będących K jest S_n&#10;3. Q P1 będących K w odniesieniu do P2 jest S_n&#10;4. Więcej P1 niż P2 jest S_n&#10;" wrapText="true">
-                     <font>
-                        <Font name="Cabin-Regular" size="16.0" />
-                     </font>
-                  </Label>
                   <Button layoutX="697.0" layoutY="432.0" mnemonicParsing="false" onAction="#generateMultiSummary" prefHeight="58.0" prefWidth="194.0" text="Wygeneruj podsumowanie" />
+                  <VBox layoutX="89.0" layoutY="432.0" prefHeight="59.0" prefWidth="478.0">
+                     <children>
+                        <RadioButton fx:id="firstForm" mnemonicParsing="false" onAction="#changeActiveMultiComboBoxes" prefHeight="18.0" prefWidth="455.0" text="1. Q P1 w odniesieniu do P2 jest S_n">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="formMultiTypeGroup" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="secondForm" mnemonicParsing="false" onAction="#changeActiveMultiComboBoxes" prefHeight="18.0" prefWidth="455.0" selected="true" text="2. Q P1 w odniesieniu do P2 będących K jest S_n" toggleGroup="$formMultiTypeGroup" />
+                        <RadioButton fx:id="thirdForm" mnemonicParsing="false" onAction="#changeActiveMultiComboBoxes" prefHeight="18.0" prefWidth="455.0" text="3. Q P1 będących K w odniesieniu do P2 jest S_n" toggleGroup="$formMultiTypeGroup" />
+                        <RadioButton fx:id="fourthForm" mnemonicParsing="false" onAction="#changeActiveMultiComboBoxes" prefHeight="18.0" prefWidth="455.0" text="4. Więcej P1 niż P2 jest S_n" toggleGroup="$formMultiTypeGroup" />
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
          </content>
