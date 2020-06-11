@@ -116,7 +116,7 @@ public class Controller {
     TextField tMultiEntry;
 
     @FXML
-    ToggleGroup qualifierTypeGroup;
+    ToggleGroup formMultiTypeGroup;
 
     @FXML
     public void initialize() {
@@ -327,45 +327,79 @@ public class Controller {
     }
 
     @FXML
+    public void changeActiveMultiComboBoxes(ActionEvent event) {
+        event.consume();
+        String id =  ((Node) event.getSource()).getId();
+        if (id.equals("firstForm")) {
+            qMultiComboBox.setDisable(false);
+            kMultiComboBox.setDisable(true);
+        } else if (id.equals("secondForm") || id.equals("thirdForm")) {
+            qMultiComboBox.setDisable(false);
+            kMultiComboBox.setDisable(false);
+        } else {
+            qMultiComboBox.setDisable(true);
+            kMultiComboBox.setDisable(true);
+        }
+    }
+
+    @FXML
     public void generateMultiSummary() {
+        String form = ((RadioButton) formMultiTypeGroup.getSelectedToggle()).getId();
         if (p1MultiComboBox.getSelectionModel().isEmpty() || p2MultiComboBox.getSelectionModel().isEmpty()
                 || s1MultiComboBox.getSelectionModel().isEmpty() || s1MultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
             drawAlertWindow();
-        } else {
-            List<String> summarizerList = new ArrayList<>();
-            summarizerList.add(s1MultiComboBox.getSelectionModel().getSelectedItem().toString());
-            if (!s2MultiComboBox.getSelectionModel().isEmpty() && !s2MultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
-                summarizerList.add(s2MultiComboBox.getSelectionModel().getSelectedItem().toString());
-            }
-            if (!s3MultiComboBox.getSelectionModel().isEmpty() && !s3MultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
-                summarizerList.add(s3MultiComboBox.getSelectionModel().getSelectedItem().toString());
-            }
-            Summarizer summarizer = new Summarizer(summarizerList, Operator.and);
-
-            Qualifier qualifier = null;
-            if (!kMultiComboBox.getSelectionModel().isEmpty() && !kMultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
-                qualifier = new Qualifier(kMultiComboBox.getSelectionModel().getSelectedItem().toString());
-            }
-
-            Relative quantifier = null;
-            if (!qMultiComboBox.getSelectionModel().isEmpty() && !qMultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
+            return;
+        }
+        Relative quantifier = null;
+        if (!form.equals("fourthForm")) {
+            if (qMultiComboBox.getSelectionModel().isEmpty() || qMultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
+                drawAlertWindow();
+                return;
+            } else {
                 String quantifierTerm = qMultiComboBox.getSelectionModel().getSelectedItem().toString();
                 quantifier = new Relative(fis, quantifierTerm);
             }
-            MultiSubjectLinguisticSummary multiSubjectLinguisticSummary;
-            Season season1 = Season.valueOf(p1MultiComboBox.getSelectionModel().getSelectedItem().toString());
-            Season season2 = Season.valueOf(p2MultiComboBox.getSelectionModel().getSelectedItem().toString());
-            if (qualifier == null && quantifier == null) {
-                multiSubjectLinguisticSummary = new FormFour(season1, season2, fWeatherData, summarizer, fis);
-            } else if (qualifier == null) {
-                multiSubjectLinguisticSummary = new FormOne(season1, season2, fWeatherData, summarizer, quantifier, fis);
-            } else if (((RadioButton) qualifierTypeGroup.getSelectedToggle()).getId().equals("secondForm")){
-                multiSubjectLinguisticSummary = new FormTwo(season1, season2, fWeatherData, summarizer, quantifier, qualifier, fis);
-            } else {
-                multiSubjectLinguisticSummary = new FormThree(season1, season2, fWeatherData, summarizer, quantifier, qualifier, fis);
-            }
-            setMultiT(multiSubjectLinguisticSummary);
         }
+        Qualifier qualifier = null;
+        if ((form.equals("secondForm") || form.equals("thirdForm"))) {
+            if (kMultiComboBox.getSelectionModel().isEmpty() || kMultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
+                drawAlertWindow();
+                return;
+            } else {
+                qualifier = new Qualifier(kMultiComboBox.getSelectionModel().getSelectedItem().toString());
+            }
+        }
+
+        List<String> summarizerList = new ArrayList<>();
+        summarizerList.add(s1MultiComboBox.getSelectionModel().getSelectedItem().toString());
+        if (!s2MultiComboBox.getSelectionModel().isEmpty() && !s2MultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
+            summarizerList.add(s2MultiComboBox.getSelectionModel().getSelectedItem().toString());
+        }
+        if (!s3MultiComboBox.getSelectionModel().isEmpty() && !s3MultiComboBox.getSelectionModel().getSelectedItem().equals("")) {
+            summarizerList.add(s3MultiComboBox.getSelectionModel().getSelectedItem().toString());
+        }
+        Summarizer summarizer = new Summarizer(summarizerList, Operator.and);
+
+        Season season1 = Season.valueOf(p1MultiComboBox.getSelectionModel().getSelectedItem().toString());
+        Season season2 = Season.valueOf(p2MultiComboBox.getSelectionModel().getSelectedItem().toString());
+        MultiSubjectLinguisticSummary multiSubjectLinguisticSummary;
+        switch (form) {
+            case "firstForm":
+                multiSubjectLinguisticSummary = new FormOne(season1, season2, fWeatherData, summarizer, quantifier, fis);
+                break;
+            case "secondForm":
+                multiSubjectLinguisticSummary = new FormTwo(season1, season2, fWeatherData, summarizer, quantifier, qualifier, fis);
+                break;
+            case "thirdForm":
+                multiSubjectLinguisticSummary = new FormThree(season1, season2, fWeatherData, summarizer, quantifier, qualifier, fis);
+                break;
+            case "fourthForm":
+                multiSubjectLinguisticSummary = new FormFour(season1, season2, fWeatherData, summarizer, fis);
+                break;
+            default:
+                multiSubjectLinguisticSummary = null;
+        }
+        setMultiT(multiSubjectLinguisticSummary);
     }
 
     private void setFromT1ToT11(LinguisticSummary linguisticSummary) {
